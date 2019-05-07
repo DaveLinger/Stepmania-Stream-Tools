@@ -9,6 +9,12 @@
 // The same exact song title is allowed to exist in different packs.
 //
 // Run this from the command line like this: "php scrape.php"
+//
+// "Wouldn't it be nice" future features?:
+// 
+// 1. Open and parse the actual .sm/.ssc/.dwi files that this script finds and extract data about each song such as number of steps, difficulty, and artist to save to DB.
+// 2. Automatically upload each pack's banner to the remote server
+// 3. Automatically upload each SONG's banner to the remote server (optional - this would use a lot of remote storage space)
 
 // Configuration
 
