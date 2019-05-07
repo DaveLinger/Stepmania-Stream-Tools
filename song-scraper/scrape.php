@@ -1,11 +1,25 @@
 <?php
 
+// PHP "Song scraper" for Stepmania
+// https://github.com/DaveLinger/Stepmania-Stream-Tools
+// This script scrapes your Stepmania songs directory for songs and posts each unique song to a mysql database table.
+// It cleans [TAGS] from the song titles and it saves a "search ready" version of each song title (without spaces or special characters) to the "strippedtitle" column.
+// This way you can have another script search/parse your entire song library - for example to make song requests.
+// You only need to re-run this script any time you add new songs. It'll skip songs that already exist in the DB.
+// The same exact song title is allowed to exist in different packs.
+//
+// Run this from the command line like this: "php scrape.php"
+
+// Configuration
+
 $scrapedir = "C:\Users\Dave\AppData\Roaming\StepMania 5/Songs";
 
 $dbhost = '';
 $dbuser = '';
 $dbpass = '';
 $db = "";
+
+// Code
 
 function clean($string) {
    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
