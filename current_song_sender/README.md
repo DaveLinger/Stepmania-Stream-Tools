@@ -1,4 +1,4 @@
-### How to use this
+# How to use this
 
 Firstly, credit to Dan Guzec [dguzek/Simply-Love-SM5](https://github.com/dguzek/Simply-Love-SM5) for showing me this method.
 
