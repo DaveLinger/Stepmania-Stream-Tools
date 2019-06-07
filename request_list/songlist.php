@@ -1,4 +1,11 @@
-<html>
+<?php
+
+define('dbhost', '');
+define('dbuser', '');
+define('dbpass', '');
+define('db', '');
+
+?><html>
 <head>
 
 <style>
@@ -41,11 +48,6 @@ $("li").click(function() {
 <p>These are all of the packs I have installed. Click the name of a pack to show/hide its songs. The number before each song title is its ID, you can request by "requestid [id number]".</p>
 </div>
 <?php
-
-define('dbhost', 'localhost');
-define('dbuser', 'davelingercom');
-define('dbpass', '$Peed2ng');
-define('db', 'davelingercom');
 
 $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
 if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
