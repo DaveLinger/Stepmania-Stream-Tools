@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+	#mydiv{
+		font-family: 'Ubuntu', sans-serif;
+		font-size:5.5vw;
+		font-weight:bold;
+	}
+        </style>
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+        <script src="https://unpkg.com/mithril@1.1.6/mithril.js"></script>
+        <script src="https://pulsoid.net/assets/js/cafa883c519a52dbc8ba3da4ce40e686-ws-util.js" type="text/javascript"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="temp" style="display:none">0</div>
+        <div id="mydiv">
+		<div style="width:15%; float:left; padding:1vw; text-align:center;"><img style="height:20vw;" id="food" src="images/food/0-dietcoke.png" /></div>
+		<div id="totalcals" style="width:79%; float:right; padding:1vw; margin-top:2vw;">Total used calories <span style="" id="showcal">0</span>kcal</div>
+		<div style="width:79%; float:right; padding:1vw; font-size:3.5vw;">Reference Food: <span id="ref_food">Diet Coke 0kcal</span></div>
+	</div>
+        <div id="view_widget_container">
+
+        </div>
+
+        <script>
+            
+$(document).ready(function(){
+    $("body").on('DOMSubtreeModified', "#heartRate", function() {
+        temp = $("#temp").html();
+        newcount = $("#heartRate").html();
+        if ( newcount !== "" ){
+	    //The following line adjusts the calorie count to match my Apple Watch's count more closely
+	    newcount = newcount * 1.3;
+            if ( temp != newcount ){
+                console.log("Calorie count changed! Old: "+temp+", New: "+newcount);
+                $("#temp").html(newcount);
+		showcal = Math.round(newcount);
+		$("#showcal").html(showcal);
+                if (newcount > 849) { console.log("calorie count is > 849"); img = "850-cinnabon.png"; reffood = "Cinnabon Classic Roll 850kcal"; } else
+                if (newcount > 799) { console.log("calorie count is > 799"); img = "800-butter.png"; reffood = "Stick of Butter 800kcal"; } else
+                if (newcount > 549) { console.log("calorie count is > 549"); img = "550-bigmac.png"; reffood = "Big Mac 550kcal"; } else
+                if (newcount > 439) { console.log("calorie count is > 439"); img = "440-chickensandwich.png"; reffood = "Chicken Sandwich 440kcal"; } else
+                if (newcount > 299) { console.log("calorie count is > 299"); img = "300-pizza.png"; reffood = "Slice of Pizza 300kcal"; } else
+                if (newcount > 229) { console.log("calorie count is > 229"); img = "230-icecream.png"; reffood = "Ice Cream Cone 230kcal"; } else
+                if (newcount > 179) { console.log("calorie count is > 179"); img = "180-churro.png"; reffood = "Cinnamon Churro 180kcal"; } else
+                if (newcount > 139) { console.log("calorie count is > 139"); img = "140-coke.png"; reffood = "Can of Coke 140kcal"; } else
+                if (newcount > 124) { console.log("calorie count is > 124"); img = "125-milk.png"; reffood = "Cup of Milk 125kcal"; } else
+                if (newcount > 99) { console.log("calorie count is > 99"); img = "100-apple.png"; reffood = "Apple 100kcal"; } else
+                if (newcount > 84) { console.log("calorie count is > 84"); img = "85-chickenwing.png"; reffood = "Fried Chicken Wing 85kcal"; } else
+                if (newcount > 29) { console.log("calorie count is > 29"); img = "30-broccoli.png"; reffood = "Cup of Broccoli 30kcal"; } else
+                if (newcount > 14) { console.log("calorie count is > 14"); img = "15-lifesaver.png"; reffood = "Pep-O-Mint Lifesaver 15kcal"; } else
+                if (newcount > 0) { console.log("calorie count is > 0"); img = "0-dietcoke.png"; reffood = "Diet Coke 0kcal"; }
+                $("#food").attr("src", "images/food/"+img);
+		$("#ref_food").html(reffood);
+            }else{console.log("Calorie count updated but didn't change.");}
+        }
+        
+    });
+});
+
+            function initViewWidgetPage(widgetId, ramielReference) {
+
+
+    var state = {};
+
+    function updateState() {
+        return m.request({
+            url: "https://pulsoid.net/v1/api/widgets/" + widgetId,
+            method: "GET"
+        }).then(result => {
+            state.widget = result;
+        })
+    }
+
+    var ramielStream = "wss://ramiel2.pulsoid.net/listen/" + ramielReference;
+
+    var startMillis = new Date().getTime();
+
+    var averageHeartRate = 0;
+    var averageCount = 0;
+
+    var calories = 0;
+
+    function calculateCalories(time) {
+        return ((-20.4022 + (0.4472 * averageHeartRate) - (0.1263 * state.widget.configuration.weight) + (0.074 * state.widget.configuration.age)) / 4.184) * (time / 60000)
+    }
+
+    function init() {
+        var preferences = state.widget.configuration;
+        var heartRate = document.getElementById("heartRate");
+        startWs(ramielStream, function (event) {
+            var bpm = parseInt(JSON.parse(event.data).data.heartRate);
+            averageHeartRate = (averageHeartRate * averageCount + bpm) / (averageCount + 1);
+            averageCount = averageCount + 1;
+            let currentTime = new Date().getTime();
+            var timeElapsed = currentTime - startMillis;
+            if (timeElapsed >= 30000) {
+                var calculatedCalories = calculateCalories(timeElapsed);
+                if (calculatedCalories > 0) {
+                    calories = calculatedCalories + calories;
+                } else {
+                    calories = calories + 0.5;
+                }
+                startMillis = currentTime;
+
+                averageHeartRate = 0;
+                averageCount = 0;
+            }
+
+            heartRate.innerHTML = Math.floor(calories);
+
+
+        }, function () {
+        }, function () {
+        });
+        if (window.location.href.includes("fromLaunch=true")) {
+            document.body.style.backgroundColor = preferences.backgroundColor;
+        } else {
+            document.body.style.backgroundColor = "transparent";
+        }
+    };
+
+
+    return {
+        oninit: function () {
+            return updateState();
+        },
+        oncreate: function () {
+            if (state.widget !== undefined) {
+                init();
+            }
+        },
+        onupdate: function () {
+            if (state.widget !== undefined) {
+                init();
+            }
+        },
+        view: function () {
+            if (state.widget === undefined) {
+                return [];
+            }
+            return m(".div", [
+                m("span.orbitron[id='heartRate']", {
+                    style: {
+                        "display": "none",
+                    }
+                })]);
+        }
+    }
+}
+
+                window.onload = function () {
+                    m.mount(document.getElementById("view_widget_container"),
+                            initViewWidgetPage("87c492b9-e174-4700-9409-c90a26c342d8","3e9e346d-1355-488c-b6b8-4b0505c9f754"))
+                }
+        </script>
+    </body>
+</html>
