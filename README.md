@@ -1,5 +1,5 @@
 # Stepmania-Stream-Tools
-Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming
+Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming. mysql_schema.sql contains the mysql table structure used by these tools on the "remote web server".
 
 There are several pieces to the puzzle here:
 
