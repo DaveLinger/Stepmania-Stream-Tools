@@ -1,0 +1,188 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+html {
+
+}
+
+body {
+	font-family: 'Ubuntu', sans-serif;
+	background-color: #000;
+}
+
+h2 {
+  letter-spacing:-0.05em;
+  font-size:10vw;
+  margin:0px;
+  margin-left:3vw;
+  margin-top:1vw;
+   text-shadow:
+       0.5vw 0.5vw 0.5vw #000,
+       3px 3px 0 #000,
+     -1px -1px 0 #000,  
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+       1px 1px 0 #000;
+   color: white;
+  position:relative;
+  z-index:4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+h3 {
+  font-size:5vw;
+  margin:0px;
+  margin-left:2vw;
+  color: white;
+  position:relative;
+  float:left;
+  display:inline-block;
+  z-index:3;
+  width:49%;
+  opacity: 0.85;
+  text-shadow: 0.25vw 0.25vw 0.5vw rgba(0,0,0,1);
+}
+
+h4 {
+  background-image: url("images/Glitch_Purple_RGB.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  font-size:4vw;
+  margin:0px;
+  margin-bottom:2vw;
+  margin-right:2vw;
+  padding-left:5vw;
+  margin-top:1vw;
+  font-weight:500;
+  color: white;
+  z-index: 2;
+  position:relative;
+  float:right;
+  display:inline-block;
+  opacity: 0.85;
+  text-shadow: 0.25vw 0.25vw 0.5vw rgba(0,0,0,0.9);
+}
+
+.songrow{
+  position:relative;
+  width:100%;
+  height:20vw;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  border-radius: 4vw;
+  margin-bottom:1vw;
+}
+
+.songrow-bg {
+    filter: blur(0.5vw);
+    -webkit-filter: blur(0.5vw);
+    position: absolute;
+    left: 0;
+    top: -25%;
+    width: 100%;
+    height: auto;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.dave h3{
+	text-shadow: 0 0 3px #fff;
+	animation: rainbow 1000ms infinite;
+	font-weight:900;
+}
+
+.completed{
+	animation:fadeoff 1s forwards;
+}
+
+.check{
+	position:absolute;
+	top:-5px;
+	left:5px;
+	z-index:5;
+	height:100%;
+	width:20vw;
+	opacity:1;
+	margin-left:3vw;
+	filter:none;
+	-webkit-filter:none;
+}
+
+@keyframes rainbow{
+		100%,0%{
+			color: rgb(255,0,0);
+			text-shadow: 0.5vw 0.5vw 0 rgb(0,0,255);
+			left:5px;
+			top:0px;
+		}
+		8%{
+			color: rgb(255,127,0);
+		}
+		16%{
+			color: rgb(255,255,0);
+		}
+		25%{
+			color: rgb(127,255,0);
+		}
+		33%{
+			color: rgb(0,255,0);
+			text-shadow: 0.5vw 0.5vw 0 rgb(255,0,0);
+			left:0px;
+			top:-5px;
+		}
+		41%{
+			color: rgb(0,255,127);
+		}
+		50%{
+			color: rgb(0,255,255);
+		}
+		58%{
+			color: rgb(0,127,255);
+		}
+		66%{
+			color: rgb(0,0,255);
+			text-shadow: 0.5vw 0.5vw 0 rgb(0,255,0);
+			left:-2px;
+			top:-2px;
+		}
+		75%{
+			color: rgb(127,0,255);
+		}
+		83%{
+			color: rgb(255,0,255);
+		}
+		91%{
+			color: rgb(255,0,127);
+		}
+}
+
+@keyframes wiggle{
+
+                0%{
+                        left:-3vw;
+                }
+                25%{
+			left:3vw;
+                }
+                50%{
+                        left:-1.5vw;
+			opacity:1;
+                }
+                75%{
+                        left:1.5vw;
+                }
+		90%{
+			left:0.5vw;
+		}
+		100%{
+			left:0vw;
+			opacity:1;
+		}
+}
+
+@keyframes fadeoff{
+		0%{opacity:1;}
+		100%{opacity:0.45;}
+}
