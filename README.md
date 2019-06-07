@@ -90,3 +90,15 @@ I also output the currently-being-played song title to a different text file. Th
 
 ## Pulsoid Food/Calories Web Widget
 I use Pulsoid (free) to display my current heart rate BPM on stream from my Wahoo Tickr heart rate strap. Pulsoid also offers a "calories burned" counter. I copied and modified that page to instead display total calories burned in relation to common food items, similar to DDR A.
+
+# Bugs
+
+- Currently the song scraper sends up the transliterated title of a song and removes \[square bracket titles\] from the beginnings of the titles as well as (parenthetical subtitles) from the ends of the titles. However, when songs are played with (parenthetical subtitles), they aren't removed before a match is attempted, so often times a song won't get "checked off" when it's played if it ends with a subtitle in parentheses. For example let's say somebody requests ALGORITHM from DDR A. Now you play that song. The script sees that you are playing a song called ALGORITHM from a pack called DDR A, so it matches and checks it off. But now let's say somebody requested CARTOON HEROES (20th Anniversary Mix). It shows up in the requests list as CARTOON HEROES from DDR A, but when you play the song, Stepmania reports that you are playing "CARTOON HEROES (20th Anniversary Mix)" from the pack DDR A, and there's no match for that. This doesn't always happen, so it's hard to figure out.
+
+# Non-Bug Issues
+
+- Moobot has some kind of automatic cooldown for chat, so if it gets invoked many times back to back, it will whisper responses to the users invoking it, rather than posting them in chat. Everything still works.
+
+# Future Development
+
+- Currently the blurred out background images for the request cards must be manually uploaded if you want to have them. Presumably the scripts should just be able to upload these from the packs, which would be super handy.
