@@ -1,7 +1,7 @@
 # Stepmania-Stream-Tools
 Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming
 
-There are basically 3 pieces to the code here:
+There are several pieces to the puzzle here:
 
 ## Song Scraper
 This software looks through your Stepmania Songs folder and uploads info for each song to a remote mysql database.
