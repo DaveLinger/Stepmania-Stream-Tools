@@ -93,3 +93,13 @@ f:destroy()
 ```
 
 So you can see here, we are writing "GAMEPLAY" to the SongInfo.txt file that OBS is going to read for scene switching, and we are writing a json object to Out/SongInfoUpload.txt containing the current song, artist, pack, difficulty, number of steps, and song duration. The "send current song" python script will see this change and sned this data to the remote server script.
+
+# Automatic Scene Switching
+
+I use the OBS plugin [**Advanced Scene Switcher**](https://obsproject.com/forum/resources/advanced-scene-switcher.395/) to read my SongInfo.txt file to automatically switch scenes based on what Stepmania is doing. Install the plugin, go to "Tools -> Advanced Scene Switcher" in OBS, and under the "Write to File / Read from File" tab, use browse button by "Switch scene based on file contents" to pick the SongInfo.txt file from your Stepmania install (I mount my Stepmania PC's Stepmania Data folder as a shared drive for this), then in "contains", add the text you want to trigger a scene switch. For example - for me, I have GAMEPLAY trigger a switch to my main gameplay OBS scene, and EVALUATION and MUSICSELECT both switch to their respective scenes in OBS.
+
+I recommend checking "Only check contents if modification date has changed", which will allow you to manually switch between scenes. With this unchecked, it'll instantly switch back to whatever scene the text file specifies if you manually switch scenes (which you probably don't want).
+
+# Song Request List Automatic "Check off" / Song Play History
+
+Use the send_current_song.py script in here to monitor Out/ for changes, and upload Out/SongInfoUpload.txt to status.php upon change. This way the server knows instantly when you start playing a song, so it can be checked off of your requests list. This also maintains a historical list of songs played in the database.
