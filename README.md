@@ -15,7 +15,7 @@ This software allows incoming calls to request songs. I use this with moobot, a 
 
 **ddrdave**: !request Algorithm
 
-(moobot makes a call to "https://www.davelinger.com/twitch/request.php?user=ddrdave&song=Algorithm")
+(moobot makes a call to "https://www.mywebsite.com/twitch/request.php?user=ddrdave&song=Algorithm")
 
 (script responds with "ddrdave requested ALGORITHM from DDR A"
 
@@ -25,7 +25,7 @@ This software allows incoming calls to request songs. I use this with moobot, a 
 
 **ddrdave**: !request Trip Machine
 
-(moobot makes a call to "https://www.davelinger.com/twitch/request.php?user=ddrdave&song=Trip+Machine")
+(moobot makes a call to "https://www.mywebsite.com/twitch/request.php?user=ddrdave&song=Trip+Machine")
 
 (script responds with "Top matches (request with !requestid \[song id\]): \[ 1090 > SP-TRIP MACHINE\~JUNGLE MIX\~ from DDR 2ndMIX \]\[ 3013 > SP-TRIP MACHINE\~JUNGLE MIX\~(SMM-Special) from PS2 - DDR X JP \]\[ 1939 > SP-TRIP MACHINE\~JUNGLE MIX\~(X-Special) from DDR X \]")
 
@@ -35,7 +35,7 @@ This software allows incoming calls to request songs. I use this with moobot, a 
 
 **ddrdave**: !requestid 1090
 
-(moobot makes a call to "https://www.davelinger.com/twitch/request.php?user=ddrdave&songid=1090")
+(moobot makes a call to "https://www.mywebsite.com/twitch/request.php?user=ddrdave&songid=1090")
 
 (script responds with "ddrdave requested SP-TRIP MACHINE\~JUNGLE MIX\~ from DDR 2ndMIX")
 
@@ -45,7 +45,7 @@ This software allows incoming calls to request songs. I use this with moobot, a 
 
 **ddrdave**: !request Some Song That Doesn't Exist
 
-(moobot makes a call to "https://www.davelinger.com/twitch/request.php?user=ddrdave&song=Some+Song+That+Doesnt+Exist")
+(moobot makes a call to "https://www.mywebsite.com/twitch/request.php?user=ddrdave&song=Some+Song+That+Doesnt+Exist")
 
 **moobot**: Didn't find any songs matching that name!
 
@@ -53,7 +53,7 @@ This software allows incoming calls to request songs. I use this with moobot, a 
 
 **ddrdave**: !requestid 1090
 
-(moobot makes a call to "https://www.davelinger.com/twitch/request.php?user=ddrdave&songid=1090")
+(moobot makes a call to "https://www.mywebsite.com/twitch/request.php?user=ddrdave&songid=1090")
 
 **moobot**: That song has already been requested recently!
 
@@ -66,4 +66,4 @@ This is just a php web page that pulls the whole list of songs from the song scr
 
 **ddrdave**: !songlist
 
-**moobot**: The song list can be found here: https://www.davelinger.com/twitch/songlist.php
+**moobot**: The song list can be found here: https://www.mywebsite.com/twitch/songlist.php
