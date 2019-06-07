@@ -1,5 +1,10 @@
 <?php
 
+   define('dbhost', '');
+   define('dbuser', '');
+   define('dbpass', '');
+   define('db', '');
+
 function clean($string) {
    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 
@@ -9,15 +14,6 @@ function clean($string) {
 if(!isset($_GET["song"]) && !isset($_GET["songid"]) && !isset($_GET["cancel"])){
 	die();
 }
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-   define('dbhost', 'localhost');
-   define('dbuser', 'davelingercom');
-   define('dbpass', '$Peed2ng');
-   define('db', 'davelingercom');
 
 function request_song($song_id, $requestor){
 
