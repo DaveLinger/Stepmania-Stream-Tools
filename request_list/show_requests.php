@@ -1,10 +1,10 @@
 
 <?php
 
-   define('dbhost', 'localhost');
-   define('dbuser', 'davelingercom');
-   define('dbpass', '$Peed2ng');
-   define('db', 'davelingercom');
+   define('dbhost', '');
+   define('dbuser', '');
+   define('dbpass', '');
+   define('db', '');
 
    $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
    if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
