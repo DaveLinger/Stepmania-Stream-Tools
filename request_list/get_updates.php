@@ -1,19 +1,21 @@
 <?php
 
-define('dbhost', '');
-define('dbuser', '');
-define('dbpass', '');
-define('db', '');
+include("includes/config.php");
+
+if(!isset($_GET["security_key"])){
+        die("Fuck off");
+}
+
+if($_GET["security_key"] != $security_key){
+        die("Fuck off");
+}
 
 $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
 if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
 
-//Get new requests, cancels, and completions
-
 function get_cancels_since($id){
 
 	global $conn;
-	//$sql = "SELECT * FROM sm_requests WHERE id > $id AND state = \"canceled\" ORDER BY id ASC";
 	$sql = "SELECT * FROM sm_requests WHERE state =\"canceled\" ORDER BY id ASC";
 	$retval = mysqli_query( $conn, $sql ) or die(mysqli_error($conn));
 	$cancels = Array();
@@ -21,8 +23,6 @@ function get_cancels_since($id){
         	$request_id = $row["id"];
 		array_push($cancels, $request_id);
 	}
-
-	//$the_cancels = json_encode($cancels);
 
 	return $cancels;
 
@@ -59,8 +59,6 @@ function get_requests_since($id){
                 array_push($requests, $request);
         }
 
-        //$the_requests = json_encode($requests);
-
         return $requests;
 
 }
@@ -76,8 +74,6 @@ function get_completions_since($id){
                 $request_id = $row["requestid"];
                 array_push($completions, $request_id);
         }
-
-        //$the_completions = json_encode($completions);
 
         return $completions;
 
