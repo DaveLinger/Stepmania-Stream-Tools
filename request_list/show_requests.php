@@ -60,7 +60,7 @@ function completion(id){
 
 function refresh_data(){
 lastid = $("#lastid").html();
-url = "get_updates.php?key='.$security_key.'&id="+lastid;
+url = "get_updates.php?security_key='.$security_key.'&id="+lastid;
     $.ajax({url: url, success: function(result){
 		if(result){
 			result = JSON.parse(result);
