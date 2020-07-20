@@ -31,7 +31,7 @@ services:
     image: mysql:5.6.40
     environment:
       <<: *common-variables
-      MYSQL_ROOT_PASSWORD: 'cIBwDcRgso'
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
     networks:
       - backend
     volumes:
