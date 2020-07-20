@@ -1,7 +1,16 @@
-version: "3.2"
+version: "3.4"
+
+x-common-variables: &common-variables
+  MYSQL_DATABASE: sm_software
+  MYSQL_USER: sw_user
+  MYSQL_PASSWORD: Y71o8QcQNn
+
 services:
   php:
     build: './docker/php/'
+    environment:
+      <<: *common-variables
+      SECRET_KEY: 'benis'
     networks:
       - backend
     volumes:
@@ -21,17 +30,12 @@ services:
   mysql:
     image: mysql:5.6.40
     environment:
-      - MYSQL_ROOT_PASSWORD=cIBwDcRgso
-      - MYSQL_DATABASE=sm_software
-      - MYSQL_USER=sw_user
-      - MYSQL_PASSWORD=Y71o8QcQNn
+      <<: *common-variables
+      MYSQL_ROOT_PASSWORD: 'cIBwDcRgso'
     networks:
       - backend
-      - frontend
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
-    ports:
-      - "3306:3306"
 networks:
   frontend:
   backend:
