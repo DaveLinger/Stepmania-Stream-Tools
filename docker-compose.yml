@@ -1,0 +1,37 @@
+version: "3.2"
+services:
+  php:
+    build: './docker/php/'
+    networks:
+      - backend
+    volumes:
+      - ./request_list/:/var/www/html/
+  apache:
+    build: './docker/apache/'
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./request_list/:/var/www/html/
+  mysql:
+    image: mysql:5.6.40
+    environment:
+      - MYSQL_ROOT_PASSWORD=cIBwDcRgso
+      - MYSQL_DATABASE=sm_software
+      - MYSQL_USER=sw_user
+      - MYSQL_PASSWORD=Y71o8QcQNn
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
+    ports:
+      - "3306:3306"
+networks:
+  frontend:
+  backend:

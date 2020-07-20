@@ -55,6 +55,7 @@ CREATE TABLE `sm_songs` (
   `strippedartist` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7402 DEFAULT CHARSET=latin1;
+INSERT INTO `sm_songs` VALUES (1, '', '', '', NOW(), '', '');
 
 -- ----------------------------
 -- Table structure for sm_songsplayed

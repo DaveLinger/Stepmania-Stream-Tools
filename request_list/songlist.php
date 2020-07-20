@@ -111,8 +111,8 @@ if (mysqli_num_rows($retval) > 1) {
                 $sql2 = "SELECT * FROM sm_songs WHERE id=\"$songid\"";
                 $retval2 = mysqli_query($conn,$sql2);
                 while($row2 = mysqli_fetch_assoc($retval2)) {
-                        $title = $row2["title"];
-			$artist = $row2["artist"];
+                 $title = $row2["title"];
+																	$artist = $row2["artist"];
                 }
 
                 if(!array_key_exists($songid,$songlist)){
