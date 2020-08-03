@@ -1,19 +1,32 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : Davelinger.com
  Source Server Type    : MySQL
- Source Server Version : 50559
+ Source Server Version : 50562
 
  Target Server Type    : MySQL
- Target Server Version : 50559
+ Target Server Version : 50562
  File Encoding         : 65001
 
- Date: 07/06/2019 11:16:20
+ Date: 16/07/2020 09:23:41
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for sm_requestors
+-- ----------------------------
+DROP TABLE IF EXISTS `sm_requestors`;
+CREATE TABLE `sm_requestors` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `twitchid` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `whitelisted` enum('true','false') DEFAULT 'false',
+  `banned` enum('true','false') DEFAULT 'false',
+  `dateadded` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for sm_requests
@@ -26,7 +39,7 @@ CREATE TABLE `sm_requests` (
   `requestor` varchar(255) DEFAULT NULL,
   `state` enum('requested','canceled') DEFAULT 'requested',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2881 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for sm_songs
@@ -41,7 +54,7 @@ CREATE TABLE `sm_songs` (
   `strippedtitle` varchar(255) DEFAULT NULL,
   `strippedartist` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7402 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for sm_songsplayed
@@ -56,6 +69,6 @@ CREATE TABLE `sm_songsplayed` (
   `pack` varchar(255) DEFAULT NULL,
   `played` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5152 DEFAULT CHARSET=latin1;
 
 SET FOREIGN_KEY_CHECKS = 1;

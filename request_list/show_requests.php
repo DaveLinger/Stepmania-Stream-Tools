@@ -1,10 +1,7 @@
 
 <?php
 
-   define('dbhost', '');
-   define('dbuser', '');
-   define('dbpass', '');
-   define('db', '');
+include("includes/config.php");
 
    $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
    if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
@@ -63,7 +60,7 @@ function completion(id){
 
 function refresh_data(){
 lastid = $("#lastid").html();
-url = "get_updates.php?id="+lastid;
+url = "get_updates.php?security_key='.$security_key.'&id="+lastid;
     $.ajax({url: url, success: function(result){
 		if(result){
 			result = JSON.parse(result);
