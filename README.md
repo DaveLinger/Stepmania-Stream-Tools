@@ -1,3 +1,6 @@
+#MrTwinkles Fork
+My fork of the project for the MrTwinklesDDR and Danizom813 channels.
+
 # Stepmania-Stream-Tools
 Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming. mysql_schema.sql contains the mysql table structure used by these tools on the "remote web server".
 
@@ -94,14 +97,8 @@ I use Pulsoid (free) to display my current heart rate BPM on stream from my Waho
 ## 7. DDR Input Indicator
 I use an OBS plugin called **[Input Overlay](https://obsproject.com/forum/resources/input-overlay.552/)** to achieve this - I had to make a custom config file and two custom graphics for this, which I'll include here in the repo. The other key factor here is you need to get the keyboard inputs from your stepmania machine onto your streaming machine, or this won't work. So I use a piece of free software called **[Input Director](https://www.inputdirector.com)** to mirror the keyboard inputs from the Stepmania PC to the streaming PC. There's virtually no latency. Install the software on both PCs, setup your steaming PC as a slave and use the software on your Stepmania PC to "Mirror keyboard input across slaves".
 
-# Bugs
-
-- Currently the song scraper sends up the transliterated title of a song and removes \[square bracket titles\] from the beginnings of the titles as well as (parenthetical subtitles) from the ends of the titles. However, when songs are played with (parenthetical subtitles), they aren't removed before a match is attempted, so often times a song won't get "checked off" when it's played if it ends with a subtitle in parentheses. For example let's say somebody requests ALGORITHM from DDR A. Now you play that song. The script sees that you are playing a song called ALGORITHM from a pack called DDR A, so it matches and checks it off. But now let's say somebody requested CARTOON HEROES (20th Anniversary Mix). It shows up in the requests list as CARTOON HEROES from DDR A, but when you play the song, Stepmania reports that you are playing "CARTOON HEROES (20th Anniversary Mix)" from the pack DDR A, and there's no match for that. This doesn't always happen, so it's hard to figure out.
 
 # Non-Bug Issues
 
 - Moobot has some kind of automatic cooldown for chat, so if it gets invoked many times back to back, it will whisper responses to the users invoking it, rather than posting them in chat. Everything still works.
 
-# Future Development
-
-- Currently the blurred out background images for the request cards must be manually uploaded if you want to have them. Presumably the scripts should just be able to upload these from the packs, which would be super handy.

@@ -1,17 +1,27 @@
 <?php
 
-include("includes/config.php");
+require("config.php");
 
-if(!isset($_GET["security_key"])){
-        die("Fuck off");
-}
-
-if($_GET["security_key"] != $security_key){
+if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
         die("Fuck off");
 }
 
 $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
 if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
+
+function format_pack($pack){
+	$pack = str_ireplace("Dance Dance Revolution","DDR",$pack);
+	$pack = str_ireplace("Dancing Stage","DS",$pack);
+	$pack = str_ireplace("Ben Speirs'","BS'",$pack);
+	$pack = str_ireplace("JBEAN Exclusives","JBEAN...",$pack);
+	$pack = preg_replace("/(\(.*\).\(.*\))$/","",$pack,1);
+	if(strlen($pack) > 25)
+		{$pack = trim(substr($pack,0,18))."...".trim(substr($pack,strlen($pack)-7));
+	}
+return $pack;
+}
+
+//Get new requests, cancels, and completions
 
 function get_cancels_since($id){
 
@@ -40,21 +50,31 @@ function get_requests_since($id){
 		$requestor = $row["requestor"];
 		$song_id = $row["song_id"];
 		$request_time = $row["request_time"];
+		$request_type = $row["request_type"];
+		if ($request_type != "random"){
+			$request_type = "";
+		}
 		
 	        $sql2 = "SELECT * FROM sm_songs WHERE id = \"$song_id\"";
         	$retval2 = mysqli_query( $conn, $sql2 ) or die(mysqli_error($conn2));
            		while($row2 = mysqli_fetch_assoc($retval2)) {
-				$request["id"] = $request_id;
-				$request["song_id"] = $song_id;
-				$request["requestor"] = $requestor;
-				$request["request_time"] = $request_time;
-		                $request["title"] = $row2["title"];
-                		$request["artist"] = $row2["artist"];
-                		$request["pack"] = $row2["pack"];
-				$request["img"] = "images/packs/unknown.png";
-				if(file_exists("images/packs/".$request["pack"].".png")){ $request["img"] = "images/packs/".$request["pack"].".png";}
-				if(file_exists("images/packs/".$request["pack"].".jpg")){ $request["img"] = "images/packs/".$request["pack"].".jpg";}
-			}
+					$request["id"] = $request_id;
+					$request["song_id"] = $song_id;
+					$request["requestor"] = $requestor;
+					$request["request_time"] = $request_time;
+					$request["request_type"] = $request_type;
+					$request["title"] = $row2["title"];
+					$request["subtitle"] = $row2["subtitle"];
+					$request["artist"] = $row2["artist"];
+					$request["pack"] = format_pack($row2["pack"]);
+					$pack_img = strtolower(preg_replace('/\s+/', '_', trim($row2["pack"])));
+					$pack_img = glob("images/packs/".$pack_img.".{jpg,jpeg,png,gif}", GLOB_BRACE);
+					if (!$pack_img){
+						$request["img"] = "images/packs/unknown.png";
+					}else{
+						$request["img"] = $pack_img[0];
+					}
+				}
 
                 array_push($requests, $request);
         }
@@ -66,16 +86,31 @@ function get_requests_since($id){
 function get_completions_since($id){
 
         global $conn;
-	$id=$id-10;
-        $sql = "SELECT DISTINCT requestid FROM sm_songsplayed WHERE requestid > $id";
+		$id=$id-50;
+        $sql = "SELECT id FROM sm_requests WHERE id > $id AND state = \"completed\"";
         $retval = mysqli_query( $conn, $sql ) or die(mysqli_error($conn));
         $completions = Array();
            while($row = mysqli_fetch_assoc($retval)) {
-                $request_id = $row["requestid"];
+                $request_id = $row["id"];
                 array_push($completions, $request_id);
         }
 
         return $completions;
+
+}
+
+function get_skips_since($id){
+
+	global $conn;
+	$sql = "SELECT * FROM sm_requests WHERE state =\"skipped\" ORDER BY id ASC";
+	$retval = mysqli_query( $conn, $sql ) or die(mysqli_error($conn));
+	$skips = Array();
+	   while($row = mysqli_fetch_assoc($retval)) {
+        	$request_id = $row["id"];
+		array_push($skips, $request_id);
+	}
+
+	return $skips;
 
 }
 
@@ -89,9 +124,12 @@ $requests = get_requests_since($id);
 
 $completions = get_completions_since($id);
 
+$skips = get_skips_since($id);
+
 $output["cancels"] = $cancels;
 $output["requests"] = $requests;
 $output["completions"] = $completions;
+$output["skips"] = $skips;
 
 $output = json_encode($output);
 
