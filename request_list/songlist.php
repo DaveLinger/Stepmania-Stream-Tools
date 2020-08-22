@@ -2,12 +2,12 @@
 <head>
  <title>SM5 Songlist</title>
 <link rel="stylesheet" 
-	href="/sm5/w3.css">
+	href="w3.css">
 <link rel="stylesheet" 
-	href="/sm5/w3-theme-dark-grey.css">
+	href="w3-theme-dark-grey.css">
 <link rel="icon" 
       type="image/png" 
-      href="/sm5/images/ddr_arrow.png">
+      href="images/ddr_arrow.png">
 <style>
 	body {
 		background-image: url("images/extreme_bg.jpg");
@@ -15,20 +15,20 @@
 	}
 </style>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108367017-1"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXXXXXXX"></script>
 	<script>
 	  window.dataLayer = window.dataLayer || [];
 	  function gtag(){dataLayer.push(arguments);}
 	  gtag('js', new Date());
 
-	  gtag('config', 'UA-108367017-1');
+	  gtag('config', 'UA-XXXXXXXXXX');
 	</script>
 </head>
 
 <body>
 <div class="w3-container w3-theme-dark">
 
-<center><h1><a href="/sm5/songlist.php"><img src="/sm5/images/ddr_arrow.png" align="float:left" width="35px" style="margin:5px"></a><strong>SM5 Songlist</strong></h1>
+<center><h1><a href="songlist.php"><img src="images/ddr_arrow.png" align="float:left" width="35px" style="margin:5px"></a><strong>SM5 Songlist</strong></h1>
 </center>
 
 <?php
@@ -155,7 +155,7 @@ echo  '<select name="pack" id="pack" style="width:100%" class="w3-input w3-paddi
 echo '</select>';
 echo '<input type="SUBMIT" value="Search" class="w3-btn w3-border"/>
 	  <input type="SUBMIT" name="random" value="Random" class="w3-btn w3-border"/>
-	  <a href="/sm5/songlist.php">Reset</a>';
+	  <a href="songlist.php">Reset</a>';
 echo '</form>';
 //$pack_img = strtolower(preg_replace('/\s+/','_',trim($pack)));
 //if(strlen($pack)>0 && file_exists("images/packs/".$pack_img.".png")){
@@ -278,18 +278,18 @@ echo '<tr>
 	<th></th>
 	<th></th>
 	<th></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_bsp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_beginner.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_esp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_light.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_msp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_standard.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_hsp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_heavy.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_csp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_challenge.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_xsp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_edit.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_bdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_beginner.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_edp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_light.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_mdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_standard.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_hdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_heavy.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_cdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_challenge.gif"></a></th>
-	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_xdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="/sm5/images/icon_edit.gif"></a></th>';
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_bsp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_beginner.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_esp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_light.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_msp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_standard.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_hsp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_heavy.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_csp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_challenge.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_xsp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_edit.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_bdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_beginner.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_edp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_light.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_mdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_standard.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_hdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_heavy.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_cdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_challenge.gif"></a></th>
+	<th class="w3-center" style="padding: 2px 4px"><a href="?query=' . $query . '&pack=' . $pack . '&order=meter_xdp&sort='; if($sort=='DESC'){echo 'ASC';}else{echo 'DESC';} echo '"><img src="images/icon_edit.gif"></a></th>';
 echo '</tr>';
 
 while ($property = mysqli_fetch_field($result)) {
