@@ -3,6 +3,14 @@
 
 include("includes/config.php");
 
+if(!isset($_GET["security_key"])){
+	die("Nope");
+}
+
+if($_GET["security_key"] != $security_key){
+	die("Nope");
+}
+
    $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
    if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
 
