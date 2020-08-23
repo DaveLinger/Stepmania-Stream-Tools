@@ -195,16 +195,16 @@ foreach ($files as $file){
 	//		
 	
 	//Get title
-		if( !isset($metadata['#TITLETRANSLIT'])){
+		if( !isset($metadata['#TITLETRANSLIT']) || empty($metadata['#TITLETRANSLIT'])){
 			//song does not have a transliterated title
-			If (isset($metadata['#TITLE'])){
+			If (isset($metadata['#TITLE']) && !empty($metadata['#TITLE'])){
 				//song has a regular title
 				$title = $metadata['#TITLE'];
 			}else{
 				//song doesn't have a title, can you believe that shit? Use the end of the filename.
 				$title = substr($song_dir, strripos($song_dir, "/")+1);
 			}
-		}elseif( isset($metadata['#TITLETRANSLIT'])){
+		}elseif( isset($metadata['#TITLETRANSLIT']) && !empty($metadata['#TITLETRANSLIT'])){
 			//song has a transliterated title
 				$title = $metadata['#TITLETRANSLIT'];
 			}else{
@@ -231,13 +231,13 @@ foreach ($files as $file){
 
 	//Get subtitle
 		
-		if( !isset($metadata['#SUBTITLETRANSLIT'])){
+		if( !isset($metadata['#SUBTITLETRANSLIT']) || empty($metadata['#SUBTITLETRANSLIT'])){
 			//song does not have a transliterated subtitle
-			If (isset($metadata['#SUBTITLE'])){
+			If (isset($metadata['#SUBTITLE']) && !empty($metadata['#SUBTITLE'])){
 				//song has a regular subtitle
 				$subtitle = $metadata['#SUBTITLE'];
 			}
-		}elseif( isset($metadata['#SUBTITLETRANSLIT'])){
+		}elseif( isset($metadata['#SUBTITLETRANSLIT']) && !empty($metadata['#SUBTITLETRANSLIT'])){
 			//song has a transliterated subtitle
 				$subtitle = $metadata['#SUBTITLETRANSLIT'];
 			}
@@ -258,13 +258,13 @@ foreach ($files as $file){
 
 	//Get artist
 		
-		if( !isset($metadata['#ARTISTTRANSLIT'])){
+		if( !isset($metadata['#ARTISTTRANSLIT']) || empty($metadata['#ARTISTTRANSLIT'])){
 			//song does not have a transliterated artist
-			If (isset($metadata['#ARTIST'])){
+			If (isset($metadata['#ARTIST']) && !empty($metadata['#ARTIST'])){
 				//song has a regular artist
 				$artist = $metadata['#ARTIST'];
 			}
-		}elseif( isset($metadata['#ARTISTTRANSLIT'])){
+		}elseif( isset($metadata['#ARTISTTRANSLIT']) && !empty($metadata['#ARTISTTRANSLIT'])){
 			//song has a transliterated artist
 				$artist = $metadata['#ARTISTTRANSLIT'];
 			}
