@@ -1,5 +1,30 @@
-# MrTwinkles Fork
-My fork of the project for the MrTwinklesDDR and Danizom813 channels.
+# What's Different in this Fork?
+This is my fork of the project for the MrTwinklesDDR and Danizom813 Twitch channels. The main differences in this fork are mostly methodology and optimizations of certain existing features.
+
+A quick summary:
+* Support for multiple channels/broadcasters with a single SM5 instance and song database.
+* Complete rewrite of the songlist to support searching and display of additional song/chart information.
+* New song scraper which iterates through the SM5 Cache directory instead of the Songs folder. This improves the parity of the database and StepMania.
+  * Focus on indexing songs by their song_dir string--the method SM5 uses to differentiate songs.
+  * New metadata is collected (and more can be added in the future) about each song including all chart information (sm_notedata database).
+  * Downsides to using the Cache directory means that installing new songs requires SM5 to build the cache before the scraper will find the new songs.
+  * Occasionally a purge of the Cache is needed if you delete a bunch of song packs.
+  * Scraper will update songs if it detects that the cache file has changed, preserving the original song ID.
+* New scraper for StepMania's Stats.xml files in the LocalProfile directory.
+* Request lift mark-off method to use StepMania 5's built-in stats tracking files (Stats.xml) instead of the python/lua scripts.
+  * NOTE: This method has its pros and cons. Pro: no need to modify your theme lua files; Con: some marks-off are missed due to the limited number of high score slots that are available.
+  * The python/lua scripts can still be used (and have been slightly improved) with minor modifications to some mysql queries.
+  * The lua script is updated to pass the SongDir() string, which improves matching songs in the database.
+* Request list has some minor formatting and aesthetic changes.
+  * New DDR-like font, addition of subtitles in the song name, special formatting of pack names (customizable), and a request type feature showing whether the request was normal or random.
+  * Different new/cancel "dings."
+* New banner image uploader finds the banner images for each song pack, formats the file name, and uploads it to the images/packs folder.
+* Random request methods are *slightly* different. Special random requests are scalable and much quicker to add.
+  * Create personal random requests for regulars of the channel (i.g. !randomHellKite, !randomdjfipu, !randomben).
+  * New possible commands thanks to the collection of step/score statistics.
+* Ability to ban songs via chat commands by song name or ID.
+* Additional session stats including recent scores, high score lists, and shout-outs to frequent requestors.
+
 
 # Stepmania-Stream-Tools
 Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming. mysql_schema.sql contains the mysql table structure used by these tools on the "remote web server".
