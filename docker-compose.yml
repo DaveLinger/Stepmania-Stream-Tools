@@ -3,14 +3,14 @@ version: "3.4"
 x-common-variables: &common-variables
   MYSQL_DATABASE: sm_software
   MYSQL_USER: sw_user
-  MYSQL_PASSWORD: Y71o8QcQNn
+  MYSQL_PASSWORD: 'Y71o8QcQNn'
+  SECRET_KEY: 'benis'
 
 services:
   php:
     build: './docker/php/'
     environment:
       <<: *common-variables
-      SECRET_KEY: 'benis'
     networks:
       - backend
     volumes:
@@ -36,6 +36,16 @@ services:
       - backend
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
+  chatbot:
+    build: './chatbot/'
+    environment:
+      <<: *common-variables
+      BOTUSERNAME: 'your-bot'
+      BOTPASSWORD: 'oauth:your-key'
+      BOTCHANNEL: 'your-channel'
+      URLBASE: 'http://apache'
+    networks:
+      - backend
 networks:
   frontend:
   backend:
