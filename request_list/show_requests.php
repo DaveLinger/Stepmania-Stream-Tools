@@ -1,10 +1,42 @@
-
 <?php
 
-include("includes/config.php");
+require ("config.php");
+
+if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
+        die("Fuck off");
+}
+
+if(!isset($_GET["security_key"])){
+	die("Nope");
+}
+
+if($_GET["security_key"] != $security_key){
+	die("Nope");
+}
 
    $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
    if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
+   
+function format_pack($pack){
+	$pack = str_ireplace("Dance Dance Revolution","DDR",$pack);
+	$pack = str_ireplace("Dancing Stage","DS",$pack);
+	$pack = str_ireplace("Ben Speirs'","BS'",$pack);
+	$pack = str_ireplace("JBEAN Exclusives","JBEAN...",$pack);
+	$pack = preg_replace("/(\(.*\).\(.*\))$/","",$pack,1);
+	if(strlen($pack) > 25)
+		{$pack = trim(substr($pack,0,18))."...".trim(substr($pack,strlen($pack)-7));
+	}
+return $pack;
+}   
+
+if(isset($_GET["broadcaster"])){
+	$broadcaster = $_GET["broadcaster"];
+	if(!array_key_exists($broadcaster,$broadcasters)){
+		$broadcaster = "%";
+	}
+}else{
+	$broadcaster = "%";
+}
 
 if(!isset($_GET["middle"])){
 
@@ -18,14 +50,17 @@ function new_request(array){
 	song_id = array.song_id;
 	requestor = array.requestor;
 	request_time = array.request_time;
+	request_type = array.request_type;
+	if (array.request_type=="random"){request_type = "<img src=\"images/d205.png\" class=\"type\">";}
 	title = array.title;
+	subtitle = array.subtitle;
 	artist = array.artist;
 	pack = array.pack;
 	img = array.img;
 
 	console.log("Adding request "+request_id);
 
-	data = \'<div class=\"songrow\" style=\"display:none\" id=\"request_\'+request_id+\'"\">\n<h2>\'+title+\'</h2>\n<h3>\'+pack+\'</h3>\n<h4>\'+requestor+\'</h4>\n<img class=\"songrow-bg\" src=\"\'+img+\'\" />\n</div>\n\';
+	data = \'<div class=\"songrow\" style=\"display:none\" id=\"request_\'+request_id+\'"\">\n<h2>\'+title+\'<h2a>\'+subtitle+\'</h2a></h2>\n<h3>\'+pack+\'</h3>\n<h4>\'+requestor+\'</h4>\n\'+request_type+\'\n<img class=\"songrow-bg\" src=\"\'+img+\'\" />\n</div>\n\';
 
         $("#lastid").html(request_id);
         $("#middle").prepend(data);
@@ -58,6 +93,15 @@ function completion(id){
 	}
 }
 
+function skipped(id){
+        request_id = id;
+	if( $("#request_"+request_id).length ){
+        	console.log("Skipping request "+request_id);
+        	$("#request_"+request_id).slideUp(600, function() {this.remove(); });
+        	$("#cancel")[0].play();
+	}
+}
+
 function refresh_data(){
 lastid = $("#lastid").html();
 url = "get_updates.php?security_key='.$security_key.'&id="+lastid;
@@ -82,8 +126,11 @@ url = "get_updates.php?security_key='.$security_key.'&id="+lastid;
                                 $.each(result["completions"], function( key, value ) {
                                         completion(value);
                                 });
-                        }else{
-                                console.log("No new completions");
+						}
+						if(result["skips"].length > 0){
+                                $.each(result["skips"], function( key, value ) {
+                                        skipped(value);
+                                }); 
                         }
 
 		}else{
@@ -94,7 +141,7 @@ url = "get_updates.php?security_key='.$security_key.'&id="+lastid;
 
 window.setInterval(function(){
 	refresh_data();
-}, 5000);
+}, 5000);    
 
 $(function() {refresh_data();});
 </script>
@@ -108,7 +155,8 @@ $(function() {refresh_data();});
 
 }
 
-        $sql = "SELECT * FROM sm_requests WHERE state=\"requested\" ORDER BY request_time DESC LIMIT 10";
+        //$sql = "SELECT * FROM sm_requests WHERE state=\"requested\" OR state=\"completed\" ORDER BY request_time DESC LIMIT 10";
+        $sql = "SELECT * FROM sm_requests WHERE state=\"requested\" OR state=\"completed\" AND broadcaster LIKE \"{$broadcaster}\" ORDER BY request_time DESC LIMIT 10";
         $retval = mysqli_query( $conn, $sql );
 		  $i=0;
 
@@ -118,6 +166,12 @@ $(function() {refresh_data();});
 	$song_id = $row["song_id"];
 	$request_time = $row["request_time"];
 	$requestor = $row["requestor"];
+	$request_type = $row["request_type"];
+	if ($request_type == "random"){
+			$request_type = '<img src="images/d205.png" class="type">';
+		}else{
+			$request_type = "";
+		}
 	
 	if($i == 0){
 		echo "<span id=\"lastid\" style=\"display:none;\">$request_id</span>\n\n";
@@ -127,36 +181,25 @@ $(function() {refresh_data();});
 	$retval2 = mysqli_query( $conn, $sql2 );
 	    while($row2 = mysqli_fetch_assoc($retval2)) {
 		$title = $row2["title"];
-		if(strpos($title, "] - ")){$title = substr($title, strpos($title, "] - ")+4);}
-		$pack = $row2["pack"];
-	    }
+		$subtitle = $row2["subtitle"];
+		$pack = format_pack($row2["pack"]);
+		$pack_img = strtolower(preg_replace('/\s+/', '_', trim($row2["pack"])));
+	   }
 
-	if(file_exists("images/packs/".$pack.".png")){
-		$packstr = str_replace("'", "\'", $pack);
-        	echo "<div class=\"songrow"; if(strpos($pack, "Dave") === false){}else{echo " dave";} echo "\" id=\"request_".$request_id."\">
-<h2>$title</h2>
-<h3>$pack</h3>
-<h4>$requestor</h4>
-<img class=\"songrow-bg\" src=\"images/packs/{$pack}.png\" />
-</div>\n";
+	$pack_img = glob("images/packs/".$pack_img.".{jpg,jpeg,png,gif}", GLOB_BRACE);
+	if (!$pack_img){
+		$pack_img = "images/packs/unknown.png";
 	}else{
-	        if(file_exists("images/packs/".$pack.".jpg")){
-			$packstr = str_replace("'", "\'", $pack);
-                echo "<div class=\"songrow\" id=\"request_".$request_id."\">
-<h2>$title</h2>
-<h3>$pack</h3>
-<h4>$requestor</h4>
-<img class=\"songrow-bg\" src=\"images/packs/{$pack}.jpg\" />
-</div>\n";
-        	}else{
-                echo "<div class=\"songrow\" id=\"request_".$request_id."\">
-<h2>$title</h2>
-<h3>$pack</h3>
-<h4>$requestor</h4>
-<img class=\"songrow-bg\" src=\"images/packs/unknown.png\" style=\"top: -50%;\" />
-</div>\n";
-		}
+		$pack_img = $pack_img[0];
 	}
+	
+echo "<div class=\"songrow\" id=\"request_".$request_id."\">			
+<h2>$title<h2a>$subtitle</h2a></h2>
+<h3>$pack</h3>
+<h4>$requestor</h4>
+$request_type
+<img class=\"songrow-bg\" src=\"{$pack_img}\" />
+</div>\n";
 
 	$i++;
     }

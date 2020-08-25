@@ -1,23 +1,30 @@
 <?php
 
-include("includes/config.php");
+include("config.php");
 
-if(!isset($_GET["security_key"])){
-        die("Fuck off");
+if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
+    die("Fuck off");
 }
 
-if($_GET["security_key"] != $security_key){
-        die("Fuck off");
-}
-
-if(!isset($_GET["ban"]) && !isset($_GET["whitelist"])){
+if(!isset($_GET["banuser"]) && !isset($_GET["whitelist"])){
 	die();
+}
+
+$conn = mysqli_connect(dbhost, dbuser, dbpass, db);
+if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
+
+function clean_user($user){
+	global $conn;
+	$user = trim(mysqli_real_escape_string($conn,$user));
+	if (strpos($user,'@') == 0){
+		$user = substr($user,1);
+	}
+	return $user;
 }
 
 function toggle_ban($user){
 
-        $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
-        if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
+    global $conn;
 
 	$sql0 = "SELECT * FROM sm_requestors WHERE name = \"$user\"";
         $retval0 = mysqli_query( $conn, $sql0 );
@@ -35,7 +42,7 @@ function toggle_ban($user){
 			$response = "Unbanned $user. Don't be a dick.";
 		}else{
 			$value = "true";
-			$response = "Banned $user. Eat shit, nerd!";
+			$response = "Banned $user. I'm sorry--it's for the best.";
 		}
 
 	        $sql = "UPDATE sm_requestors SET banned=\"$value\" WHERE id=\"$id\" LIMIT 1";
@@ -49,8 +56,7 @@ function toggle_ban($user){
 
 function toggle_whitelist($user){
 
-        $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
-        if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
+        global $conn;
 
         $sql0 = "SELECT * FROM sm_requestors WHERE name = \"$user\"";
         $retval0 = mysqli_query( $conn, $sql0 );
@@ -80,12 +86,12 @@ function toggle_whitelist($user){
 
 }
 
-if(isset($_GET["ban"])){
-	toggle_ban($_GET["ban"]);
+if(isset($_GET["banuser"])){
+	toggle_ban(clean_user($_GET["banuser"]));
 }
 
 if(isset($_GET["whitelist"])){
-        toggle_whitelist($_GET["whitelist"]);
+    toggle_whitelist(clean_user($_GET["whitelist"]));
 }
 
 ?>
