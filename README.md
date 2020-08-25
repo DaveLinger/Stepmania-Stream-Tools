@@ -27,7 +27,15 @@ A quick summary:
 
 
 # Stepmania-Stream-Tools
-Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming. mysql_schema.sql contains the mysql table structure used by these tools on the "remote web server".
+Tools and utilities for interacting with Stepmania 5 to provide added features for live streaming.
+
+## New Stuff
+
+### Docker Support
+
+To increase simplicity of deployment of the software, I have added support for Docker and Docker Compose. Simply install Docker Desktop on your machine, clone this repo, go into this directory (the one with docker-compose.yml in it) and run "docker-compose up". It should build and start all necessary software for you, auto-magically! You can access the song list at http://localhost . To add songs, just use the same mysql info from the includes/config.php file in the scraper file! Easy peasy!
+
+---
 
 There are several pieces to the puzzle here:
 
