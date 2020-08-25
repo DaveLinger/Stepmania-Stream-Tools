@@ -7,7 +7,9 @@ if(getenv("MYSQL_DATABASE") != ""){
     define('dbhost', 'mysql');
     define('db', $dbname);
 }else{
+    //Your database host. 'localhost' if you are running the DB on the same machine as the web server.
     define('dbhost', '');
+    //Your database name.
     define('db', '');
 }
 
@@ -15,6 +17,7 @@ if(getenv("MYSQL_USER") != ""){
     $dbuser = getenv("MYSQL_USER");
     define('dbuser', $dbuser);
 }else{
+    //Your database username.
     define('dbuser', '');
 }
 
@@ -22,17 +25,27 @@ if(getenv("MYSQL_PASSWORD") != ""){
     $dbpass = getenv("MYSQL_PASSWORD");
     define('dbpass', $dbpass);
 }else{
+    //Your database password.
     define('dbpass', '');
 }
 
 if(getenv("SECRET_KEY") != ""){
     $security_key = getenv("SECRET_KEY");
 }else{
+    //Security key. Set this to anything. All incoming requests (like from moobot) will have to include this key or they'll be discarded.
+    //This way people can't hit your endpoints directly without permission.
     $security_key = "";
 }
 
-//List of banned songs, comma separated. This is going to be replaced by database flags soon. Example: Array(69,420,80085);
-$banned = Array();
-$GLOBALS["banned"] = $banned;
+//Upload directory for banner pack images (absolute directory on server)
+$uploaddir = '/var/www/html/sm5/images/packs';
+
+//Broadcaster List. Define an array to associate broadcaster names with StepMania profile names.
+//This is only required if your StepMania setup is used by more than 1 twitch account.
+$broadcasters = array(
+						//twitch id			//SM5 profile
+						'ddrdave' 		=> 	'Dave',
+						'mrtwinkles' => 	'MRT'
+					 );
 
 ?>
