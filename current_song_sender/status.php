@@ -2,16 +2,20 @@
 
 //This is the php script on the remote web server that the "send current song" python script sends its data to.
 
-   	define('dbhost', '');
-   	define('dbuser', '');
-   	define('dbpass', '');
-   	define('db', '');
+include ('config.php');
+
+if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
+    die("Fuck off");
+}
 
 function clean($string) {
    $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
-
    return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+   $string = mysqli_real_escape_string($conn, $string); // Removes sql injection atempts.
 }
+
+$conn = mysqli_connect(dbhost, dbuser, dbpass, db);
+        if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
 
 if(isset($_GET["data"])){
 
@@ -19,54 +23,18 @@ if(isset($_GET["data"])){
 
 if(!isset($data["song"])){echo "Cleared"; die();}
 
-        $title = $data["song"];
+	$song_dir = $data["dir"];
+	$player = $data["player"];
 
-	if(strpos($title, "[") == 0 && strpos($title, "]")){
-		//This song title has a [BRACKETED TAG] before the actual title, let's remove it
-		$firstbracketpos = strpos($title, "[");
-		$lastbracketpos = strpos($title, "]");
-		$title = substr($title, $lastbracketpos+1);
-		
-		if(strpos($title, "- ") == 1){
-			//This song title now has a " - " before the actual title, let's remove that too
-			$title = substr($title, 3);
-		}
-	}
-
-	$title = trim($title);
-	$title = addslashes($title);
-	 $strippedtitle = clean($title);
-	$pack = $data["pack"];
-	$artist = $data["artist"];
-	$diff = $data["diff"];
-	$steps = $data["steps"];
-	$time = $data["time"];
-
-        $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
-        if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
-
-        $sql = "SELECT * FROM sm_songs WHERE strippedtitle = \"$strippedtitle\" AND pack = \"$pack\"";
+        $sql = "SELECT * FROM sm_songs WHERE song_dir = \"$song_dir\"";
         $retval = mysqli_query( $conn, $sql );
-
-        if (mysqli_num_rows($retval) == 0) {
-
-		$total_strlen = strlen($title);
-		if(strpos($title,")")){
-			//String ends with a closing parenthesis, let's remove that part
-			$startparenthesis = strpos($title,"(");
-			$title = substr($title,0,$startparenthesis-1);
-			$strippedtitle = clean($title);
-		}
-
-	        $sql = "SELECT * FROM sm_songs WHERE strippedtitle = \"$strippedtitle\" AND pack = \"$pack\"";
-	        $retval = mysqli_query( $conn, $sql );
-
-	}
 
         if (mysqli_num_rows($retval) == 1) {
 		//matched a song ID
-                $row = mysqli_fetch_assoc($retval);
+        $row = mysqli_fetch_assoc($retval);
 		$song_id = $row["id"];
+		$title = $row["title"];
+		$pack = $row["pack"];
 
         	$sql = "SELECT * FROM sm_requests WHERE song_id = \"$song_id\" ORDER BY request_time DESC LIMIT 1";
         	$retval = mysqli_query( $conn, $sql );
@@ -83,10 +51,10 @@ if(!isset($data["song"])){echo "Cleared"; die();}
 		$song_id = "0";
 	}
 
-        $sql = "INSERT INTO sm_songsplayed (songid, requestid, title, artist, pack, played) VALUES (\"$song_id\", \"$request_id\", \"$title\", \"$artist\", \"$pack\", NOW())";
+        $sql = "INSERT INTO sm_songsplayed (song_id, request_id, played) VALUES (\"$song_id\", \"$request_id\", NOW())";
         $retval = mysqli_query( $conn, $sql );
 
-	echo "Added row to db";
+	echo "Added row to db for ".{$title}." from ".{$pack};
 
 }else{
 	echo "No data present";

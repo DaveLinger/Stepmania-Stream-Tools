@@ -40,6 +40,8 @@ Then for our "send current song" script, it writes "SongInfoUpload.txt" to a new
 
 I put this exact same code into the end of "ScreenEvaluationNew decorations/default.lua", except I replaced "MUSICSELECT" with "EVALUATION". This way if I wanted to have a special "score" scene in OBS, I could.
 
+MrTwinkles: For my implementation, I needed to also find which player is playing (P1 or P2). This modification also finds the MasterPlayerNumber, which should work whether you play on the left or right side of the stage.
+
 Then comes the modification to "ScreenGameplay overlay/default.lua":
 
 ```
@@ -48,7 +50,8 @@ local f = RageFileUtil.CreateRageFile()
 
 if f:Open("Save/SongInfo.txt", 2) then	
 
-	f:Write("GAMEPLAY\n")
+	local pn = ToEnumShortString(GAMESTATE:GetMasterPlayerNumber())
+	f:Write("GAMEPLAY\n"..pn.."\n")
 
 else
 	local fError = f:GetError()
@@ -64,8 +67,11 @@ local f = RageFileUtil.CreateRageFile()
 if f:Open("Save/Out/SongInfoUpload.txt", 2) then	
 	-- get gamestate objects
 	local song = GAMESTATE:GetCurrentSong()
-	local stepData = GAMESTATE:GetCurrentSteps(0)
+	local pn = ToEnumShortString(GAMESTATE:GetMasterPlayerNumber())
+	local stepData = GAMESTATE:GetCurrentSteps(pn)
 	
+	--dir
+	local dir = "\"dir\":\""..song:GetSongDir().."\","
 	-- name
 	local name = "\"song\":\""..song:GetTranslitFullTitle().."\","
 	-- artist
@@ -75,13 +81,15 @@ if f:Open("Save/Out/SongInfoUpload.txt", 2) then
 	-- diff
 	local diff =  "\"diff\":\""..stepData:GetMeter().."\","
 	-- steps
-	local steps = "\"steps\":\""..stepData:GetRadarValues(0):GetValue(5).."\","
+	local steps = "\"steps\":\""..stepData:GetRadarValues(pn):GetValue(5).."\","
 	-- time
 	local time = song:GetStepsSeconds()
 	time = string.format("\"time\":\"%d:%02d\"", math.floor(time/60), math.floor(time%60))
+	-- player
+	local pn = "\"player\":\""..pn.."\","
 
 	-- complete! 
-	f:Write("{"..name..artist..pack..diff..steps..time.."}")
+	f:Write("{"..dir..name..artist..pack..pn..diff..steps..time.."}")
 
 else
 	local fError = f:GetError()
@@ -92,7 +100,7 @@ f:destroy()
 ---------------------------------
 ```
 
-So you can see here, we are writing "GAMEPLAY" to the SongInfo.txt file that OBS is going to read for scene switching, and we are writing a json object to Out/SongInfoUpload.txt containing the current song, artist, pack, difficulty, number of steps, and song duration. The "send current song" python script will see this change and sned this data to the remote server script.
+So you can see here, we are writing "GAMEPLAY" to the SongInfo.txt file that OBS is going to read for scene switching, and we are writing a json object to Out/SongInfoUpload.txt containing the current songdir, song, artist, pack, difficulty, number of steps, and song duration. The "send current song" python script will see this change and send this data to the remote server script.
 
 # Automatic Scene Switching
 

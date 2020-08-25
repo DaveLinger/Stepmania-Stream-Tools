@@ -1,0 +1,814 @@
+﻿{
+    "version": 1,
+    "description": "moobot.200",
+    "service": "twitch",
+    "settings": [
+        {
+            "type": "tiers",
+            "data": [
+                {
+                    "tier": 3,
+                    "roles": [
+                        {
+                            "name": "vip",
+                            "value": 0
+                        },
+                        {
+                            "name": "founder",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "tier": 2,
+                    "roles": [
+                        {
+                            "name": "subscriber",
+                            "value": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "commands_custom",
+            "data": [
+                {
+                    "colored": false,
+                    "identifier": "bansong",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/song_admin.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&bansong=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": false,
+                    "identifier": "bansongid",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/song_admin.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&bansongid=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": false,
+                    "identifier": "banuser",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/requestor.php?security_key=secret-key&broadcaster=<channel.name>&banuser=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "cancel",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&cancel=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "gitgud",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=gitgud&num=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": false,
+                    "identifier": "petdog",
+                    "text": "<username> wants you to pet Tara.",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "portal",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=portal&num=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "random",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=random&num=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "randomben",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=Ben+Speirs&num=<args.1>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "randomddr",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=Dance+Dance+Revolution%7CDancing+Stage&num=<args.1>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "randomdjfipu",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=djfipu&num=<args.1>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "randomhellkite",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=HellKiteChaoS&num=<args.1>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "request",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&song=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "url_fetch_error": "<username> didn't specify a song!",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "requestid",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&songid=<args.1>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "url_fetch_error": "<username> didn't supply a valid id!",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "skip",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&skip=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "songlist",
+                    "text": "The songlist for requesting songs can be found here: https://domain.tld/sm5/songlist.php",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "top",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/rand_request.php?security_key=secret-key&broadcaster=<channel.name>&user=<user.name>&userid=<user.id>&tier=<user.tier>&random=top&num=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": true,
+                    "identifier": "uptime",
+                    "text": "<channel.name.sc> has been streaming for <uptime.timestamp>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "display_full_duration": true,
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                },
+                {
+                    "colored": false,
+                    "identifier": "whitelist",
+                    "text": "<urlfetch.plain>",
+                    "counter": 0,
+                    "counter_usergroups": [
+                        2,
+                        3,
+                        4,
+                        0,
+                        1
+                    ],
+                    "counter_cooldown": 1,
+                    "counter_trigger_increment": true,
+                    "cooldown": 5,
+                    "enabled": true,
+                    "expires_disable": false,
+                    "trigger_states": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "trigger_usergroups": [
+                        1
+                    ],
+                    "display_full_duration": false,
+                    "url_fetch_url": "https://domain.tld/sm5/requestor.php?security_key=secret-key&broadcaster=<channel.name>&whitelist=<args>",
+                    "url_fetch_type": "text",
+                    "url_fetch_version": 1,
+                    "url_fetch_method": "GET",
+                    "random_number_range_start": 1,
+                    "random_number_range_end": 100,
+                    "random_number_range_custom": true,
+                    "random_number_display_range": false,
+                    "mod_editable": false
+                }
+            ]
+        },
+        {
+            "type": "command_aliases",
+            "data": [
+                {
+                    "alias": "rid",
+                    "type": "custom",
+                    "id": "requestid",
+                    "arguments": null
+                },
+                {
+                    "alias": "sr",
+                    "type": "custom",
+                    "id": "request",
+                    "arguments": null
+                }
+            ]
+        }
+    ]
+}
