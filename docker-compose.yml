@@ -1,7 +1,7 @@
 version: "3.4"
 
 x-common-variables: &common-variables
-  MYSQL_DATABASE: sm_software
+  MYSQL_DATABASE: SMsonglist
   MYSQL_USER: sw_user
   MYSQL_PASSWORD: 'Y71o8QcQNn'
   SECRET_KEY: 'benis'
@@ -32,6 +32,8 @@ services:
     environment:
       <<: *common-variables
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - '3306:3306'
     networks:
       - backend
     volumes:
