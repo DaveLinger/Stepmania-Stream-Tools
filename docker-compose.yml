@@ -11,6 +11,7 @@ services:
     build: './docker/php/'
     environment:
       <<: *common-variables
+      BANNER_DIR: '/var/www/html/images/packs'
     networks:
       - backend
     volumes:

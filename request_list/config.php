@@ -37,8 +37,12 @@ if(getenv("SECRET_KEY") != ""){
     $security_key = "";
 }
 
-//Upload directory for banner pack images (absolute directory on server)
-$uploaddir = '/var/www/html/sm5/images/packs';
+if(getenv("BANNER_DIR") != ""){
+    $uploaddir = getenv("BANNER_DIR");
+}else{
+	//Upload directory for banner pack images (absolute directory on server)
+	$uploaddir = '/var/www/html/sm5/images/packs';
+}
 
 //Broadcaster List. Define an array to associate broadcaster names with StepMania profile names.
 //This is only required if your StepMania setup is used by more than 1 twitch account.
