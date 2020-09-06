@@ -26,6 +26,8 @@ if(!isset($_GET["random"]) && !isset($_GET["num"]) && !is_numeric($_GET["num"]))
 function add_user($userid, $user){
 
 	global $conn;
+	
+	$user = strtolower($user);
 	$sql = "INSERT INTO sm_requestors (twitchid, name, dateadded) VALUES (\"$userid\", \"$user\", NOW())";
 	$retval = mysqli_query( $conn, $sql );
 	$the_id = mysqli_insert_id($conn);
@@ -37,7 +39,15 @@ function add_user($userid, $user){
 function check_user($userid, $user){
 
         global $conn;
-        $sql0 = "SELECT * FROM sm_requestors WHERE twitchid = \"$userid\"";
+		
+		$user = strtolower($user);
+		
+		//case where the bot cannot supply the twitchid, use the name
+		if($userid > 0 || !empty($userid)){
+			$sql0 = "SELECT * FROM sm_requestors WHERE twitchid = \"$userid\"";
+		}else{
+			$sql0 = "SELECT * FROM sm_requestors WHERE name = \"$user\"";
+		}
         $retval0 = mysqli_query( $conn, $sql0 );
         $numrows = mysqli_num_rows($retval0);
 
@@ -86,7 +96,7 @@ function check_cooldown($user){
 	if($length > 10){
 		die("Too many songs on the request list! Try again in a few minutes.");
 	}
-    $interval = 0.5 * $length;
+    $interval = 0.75 * $length;
 	
 	//scale cooldown as a function of the number of requests. 30 seconds per open request.	
 		global $conn;
@@ -94,7 +104,7 @@ function check_cooldown($user){
         $retval0 = mysqli_query( $conn, $sql0 );
 	$numrows = mysqli_num_rows($retval0);
 	if($numrows != 0){
-		die("Slow down there, part'ner! Try again in ".ceil($interval)." minutes");
+		die("Slow down there, part'ner! Try again in ".ceil($interval)." minutes.");
 	}
 }
 
@@ -129,7 +139,7 @@ $tier = $_GET["tier"];
 if(isset($_GET["userid"])){
 	$twitchid = $_GET["userid"];
 }else{
-	$twitchid = "";
+	$twitchid = 0;
 }
 //get broadcaster and adjust query filters
 if(isset($_GET["broadcaster"])){
@@ -209,12 +219,12 @@ if($_GET["random"]=="top"){
 				JOIN 
 					(SELECT song_id,MAX(numplayed) AS numplayed
 					FROM sm_scores
-					WHERE song_id>0 AND username LIKE \"{$profileName}\" 
+					WHERE song_id>0 AND numplayed>1 AND username LIKE \"{$profileName}\" 
 					GROUP BY song_id
 					ORDER BY numplayed desc
 					LIMIT 100) AS t2
 				ON t2.song_id=sm_songs.id 
-				WHERE banned<>1 AND installed=1 AND numplayed >1 
+				WHERE banned<>1 AND installed=1  
 				ORDER BY RAND()
 				LIMIT {$num}";
         $retval = mysqli_query( $conn, $sql );
@@ -249,7 +259,7 @@ if($_GET["random"]=="gitgud"){
 						GROUP BY song_id
 						ORDER BY numplayed DESC 
 						LIMIT 100) 
-					AND grade <> 'Failed' AND numplayed > 1 AND percentdp > 0 
+					AND grade <> 'Failed' AND numplayed > 1 AND percentdp > 0 AND username LIKE \"{$profileName}\" 
 					GROUP BY song_id 
 					ORDER BY percentdp ASC 
 					LIMIT 25) AS t2 

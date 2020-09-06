@@ -20,6 +20,8 @@ if(!isset($_GET["song"]) && !isset($_GET["songid"]) && !isset($_GET["cancel"]) &
 function add_user($userid, $user){
 
 	global $conn;
+	
+	$user = strtolower($user);
 	$sql = "INSERT INTO sm_requestors (twitchid, name, dateadded) VALUES (\"$userid\", \"$user\", NOW())";
 	$retval = mysqli_query( $conn, $sql );
 	$the_id = mysqli_insert_id($conn);
@@ -31,7 +33,15 @@ function add_user($userid, $user){
 function check_user($userid, $user){
 
         global $conn;
-        $sql0 = "SELECT * FROM sm_requestors WHERE twitchid = \"$userid\"";
+		
+		$user = strtolower($user);
+		
+		//case where the bot cannot supply the twitchid, use the name
+		if($userid > 0 || !empty($userid)){
+			$sql0 = "SELECT * FROM sm_requestors WHERE twitchid = \"$userid\"";
+		}else{
+			$sql0 = "SELECT * FROM sm_requestors WHERE name = \"$user\"";
+		}
         $retval0 = mysqli_query( $conn, $sql0 );
         $numrows = mysqli_num_rows($retval0);
 
@@ -80,7 +90,7 @@ function check_cooldown($user){
 	if($length > 10){
 		die("Too many songs on the request list! Try again in a few minutes.");
 	}
-    $interval = 0.5 * $length;
+    $interval = 0.75 * $length;
 		
 		global $conn;
         $sql0 = "SELECT * FROM sm_requests WHERE state <> \"canceled\" AND requestor = \"$user\" AND request_time > DATE_SUB(NOW(), INTERVAL {$interval} MINUTE)";
@@ -133,7 +143,7 @@ $tier = $_GET["tier"];
 if(isset($_GET["userid"])){
 	$twitchid = $_GET["userid"];
 }else{
-	$twitchid = "";
+	$twitchid = 0;
 }
 
 //get broadcaster
@@ -148,7 +158,7 @@ $userobj = check_user($twitchid, $user);
 if(isset($_GET["cancel"])){
 	
 	if (!empty($_GET["cancel"]) && is_numeric($_GET["cancel"])){
-		$num = $_GET["cancel"];
+		$num = $_GET["cancel"] - 1;
 	}else{
 		$num = 0;
 	}
@@ -180,10 +190,10 @@ die();
 
 if(isset($_GET["skip"])){
 	
-	if(strtolower($user) !== $broadcaster){die("That's gonna be a no from me, dawg.");}
+	//if(strtolower($user) !== $broadcaster){die("That's gonna be a no from me, dawg.");}
 
 	if (!empty($_GET["skip"]) && is_numeric($_GET["skip"])){
-		$num = $_GET["skip"];
+		$num = $_GET["skip"] - 1;
 	}else{
 		$num = 0;
 	}
@@ -232,7 +242,7 @@ if(isset($_GET["song"])){
 	$song = clean($song);
 
 	//Determine if there's a song with this exact title. If someone requested "Tsugaru", this would match "TSUGARU" but would not match "TSUGARU (Apple Mix)"
-        $sql = "SELECT * FROM sm_songs WHERE strippedtitle=\"$song\" AND installed=1 ORDER BY title ASC, pack ASC";
+        $sql = "SELECT * FROM sm_songs WHERE strippedtitle=\"$song\" AND installed = 1 ORDER BY title ASC, pack ASC";
         $retval = mysqli_query( $conn, $sql );
 
 	if (mysqli_num_rows($retval) == 1) {
@@ -244,7 +254,11 @@ if(isset($_GET["song"])){
 	//end exact match
 	}
 
-        $sql = "SELECT * FROM sm_songs WHERE strippedtitle LIKE \"%$song%\" AND installed=1 ORDER BY title ASC, pack ASC";
+        $sql = "SELECT sm_songs.id AS id,sm_songs.title AS title,sm_songs.subtitle AS subtitle,sm_songs.pack AS pack FROM sm_songs 
+				LEFT JOIN sm_scores ON sm_songs.id = sm_scores.song_id 
+				WHERE strippedtitle LIKE \"%$song%\" AND installed = 1 
+				GROUP BY sm_songs.id 
+				ORDER BY MAX(sm_scores.numplayed) DESC, title ASC, pack ASC";
         $retval = mysqli_query( $conn, $sql );
 
 if (mysqli_num_rows($retval) == 1) {
