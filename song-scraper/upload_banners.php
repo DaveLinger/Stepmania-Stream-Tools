@@ -60,8 +60,6 @@ foreach ($pack_dir as $path){
 	}
 }
 
-//print_r($img_arr);
-
 foreach ($img_arr as $img){
 	//upload banner images
 	$cError = curl_upload($img['img_path'],$img['pack_name']);

@@ -16,6 +16,8 @@ services:
       - backend
     volumes:
       - ./request_list/:/var/www/html/
+      - ./song-scraper/:/var/www/scraper/
+      - C:/Games/StepMania 5.1:/var/www/smdir
   apache:
     build: './docker/apache/'
     depends_on:
