@@ -7,8 +7,21 @@ x-common-variables: &common-variables
   SECRET_KEY: 'benis'
 
 services:
+  mysql:
+    image: mysql:5.6.40
+    environment:
+      <<: *common-variables
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - '3306:3306'
+    networks:
+      - backend
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
   php:
     build: './docker/php/'
+    depends_on:
+      - mysql
     environment:
       <<: *common-variables
       BANNER_DIR: '/var/www/html/images/packs'
@@ -30,17 +43,6 @@ services:
       - "80:80"
     volumes:
       - ./request_list/:/var/www/html/
-  mysql:
-    image: mysql:5.6.40
-    environment:
-      <<: *common-variables
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-    ports:
-      - '3306:3306'
-    networks:
-      - backend
-    volumes:
-      - ./sql/:/docker-entrypoint-initdb.d/
   chatbot:
     build: './chatbot/'
     environment:

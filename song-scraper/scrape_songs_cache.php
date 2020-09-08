@@ -35,7 +35,6 @@ function parseMetadata($file) {
 	$data = substr($data,0,strpos($data,"//-------"));
 	
 	$file_arr = preg_split("/{$eol}/",$data);
-	//print_r($file_arr);
 	
 	foreach ($file_arr as $line){
 		// if there is no $delimiter, set an empty string
