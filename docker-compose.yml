@@ -8,7 +8,7 @@ x-common-variables: &common-variables
 
 services:
   mysql:
-    image: mysql:5.6.40
+    image: mariadb
     environment:
       <<: *common-variables
       MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
@@ -18,6 +18,7 @@ services:
       - backend
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
+      - ./docker/persist/:/var/lib/mysql
   php:
     build: './docker/php/'
     depends_on:
