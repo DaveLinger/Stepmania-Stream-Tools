@@ -45,6 +45,7 @@ services:
     volumes:
       - ./request_list/:/var/www/html/
       - ./song-scraper/:/var/www/html/scraper/
+      - C:/Games/StepMania 5.1:/var/www/smdir
   chatbot:
     build: './chatbot/'
     environment:
@@ -55,6 +56,14 @@ services:
       URLBASE: 'http://apache'
     networks:
       - backend
+  song_sender:
+    build: './docker/song_sender/'
+    environment:
+      <<: *common-variables
+    networks:
+      - backend
+    volumes:
+      - C:/Games/StepMania 5.1:/usr/src/app/sm5
 networks:
   frontend:
   backend:

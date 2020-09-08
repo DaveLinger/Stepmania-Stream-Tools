@@ -2,7 +2,7 @@
 
 //This is the php script on the remote web server that the "send current song" python script sends its data to.
 
-include ('config.php');
+include ('../config.php');
 
 if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
     die("Fuck off");
@@ -54,7 +54,7 @@ if(!isset($data["song"])){echo "Cleared"; die();}
         $sql = "INSERT INTO sm_songsplayed (song_id, request_id, played) VALUES (\"$song_id\", \"$request_id\", NOW())";
         $retval = mysqli_query( $conn, $sql );
 
-	echo "Added row to db for ".{$title}." from ".{$pack};
+	echo "Added row to db for ".$title." from ".$pack;
 
 }else{
 	echo "No data present";
