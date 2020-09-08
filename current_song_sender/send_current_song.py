@@ -18,7 +18,7 @@ class CustomFileEventHandler(FileSystemEventHandler):
 					if data != olddata:
 						olddata = data
 						newdata = urllib.quote_plus(data)
-						link = "https://www.davelinger.com/twitch/status.php?data=" + newdata
+						link = "https://www.davelinger.com/twitch/status.php?security_key=benis&data=" + newdata
 						f = urllib.urlopen(link)
 						response = f.read()
 						print(response)
