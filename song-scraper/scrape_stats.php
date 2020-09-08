@@ -4,6 +4,13 @@
 
 include ('config.php');
 
+if (php_sapi_name() == "cli") {
+    // In cli-mode
+} else {
+	// Not in cli-mode
+	if (!isset($_GET['security_key']) || $_GET['security_key'] != $security_key){die("Fuck off");}
+}
+
 $conn = mysqli_connect(dbhost, dbuser, dbpass, db);   
 if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
 

@@ -6,7 +6,7 @@ if (php_sapi_name() == "cli") {
     // In cli-mode
 } else {
 	// Not in cli-mode
-	if (!isset($_POST['security_key']) || $_POST['security_key'] != $security_key){die("Fuck off");}
+	if (!isset($_GET['security_key']) || $_GET['security_key'] != $security_key){die("Fuck off");}
 }
 
 $banners_copied = 0;

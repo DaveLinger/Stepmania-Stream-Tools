@@ -44,7 +44,7 @@ class Watcher(object):
 # Call this function each time a change happens
 def custom_action(text):
     print("Calling stats scraper...")
-    link = "http://apache/scraper/scrape_stats.php?security_key=benis"
+    link = "http://apache/scraper/scrape_stats.php?security_key=" + os.getenv('SECRET_KEY')
     f = urllib.urlopen(link)
     response = f.read()
     print(response)
