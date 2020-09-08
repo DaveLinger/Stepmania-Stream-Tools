@@ -1,1 +1,0 @@
-START /D "C:\php" php.exe "C:\Users\Dave\Desktop\Stepmania-Stream-Tools\song-scraper\scrape_songs_cache.php"

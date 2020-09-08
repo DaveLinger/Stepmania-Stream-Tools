@@ -30,7 +30,7 @@ services:
       - backend
     volumes:
       - ./request_list/:/var/www/html/
-      - ./song-scraper/:/var/www/scraper/
+      - ./song-scraper/:/var/www/html/scraper/
       - C:/Games/StepMania 5.1:/var/www/smdir
   apache:
     build: './docker/apache/'
@@ -44,6 +44,7 @@ services:
       - "80:80"
     volumes:
       - ./request_list/:/var/www/html/
+      - ./song-scraper/:/var/www/html/scraper/
   chatbot:
     build: './chatbot/'
     environment:
