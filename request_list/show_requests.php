@@ -12,6 +12,7 @@ if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
 function format_pack($pack){
 	$pack = str_ireplace("Dance Dance Revolution","DDR",$pack);
 	$pack = str_ireplace("Dancing Stage","DS",$pack);
+	$pack = str_ireplace("In The Groove","ITG",$pack);
 	$pack = str_ireplace("Ben Speirs'","BS'",$pack);
 	$pack = str_ireplace("JBEAN Exclusives","JBEAN...",$pack);
 	$pack = preg_replace("/(\(.*\).\(.*\))$/","",$pack,1);

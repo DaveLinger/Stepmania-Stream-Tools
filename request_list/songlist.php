@@ -8,9 +8,9 @@
 <link rel="icon" 
       type="image/png" 
       href="images/ddr_arrow.png">
+<meta name="robots" content="noindex,nofollow">	  
 <style>
 	body {
-		background-image: url("images/extreme_bg.jpg");
 		background-color:#303030;
 	}
 </style>
@@ -449,14 +449,14 @@ foreach($songs as $song){
 					default:
 					  $color = "55, 55, 55";
 				  }
-			echo "<tr style=\"background-color: rgba({$color}, 0.2);\"><td>{$chart["difficulty"]}:</td><td><b>{$chart["meter"]}</b></td><td colspan=2>";
+			echo "<tr style=\"background-color: rgba({$color}, 0.2);\"><td style=\"text-align: right;\">{$chart["difficulty"]}:</td><td style=\"text-align: center;\"><b>{$chart["meter"]}</b></td><td colspan=2>";
 			if($chart["credit"] != ""){echo " ({$chart["credit"]})</b></td>";}else{echo "</td></tr>";}
-			echo "<tr><td>Steps</td><td><b>{$chart["steps"]}</b></td>";
-			echo "<td>Mines</td><td><b>{$chart["mines"]}</b></td></tr>";
-			echo "<tr><td>Jumps</td><td><b>{$chart["jumps"]}</b></td>";
-			echo "<td>Hands</td><td><b>{$chart["hands"]}</b></td></tr>";
-			echo "<tr><td>Holds</td><td><b>{$chart["holds"]}</b></td>";
-			echo "<td>Rolls</td><td><b>{$chart["rolls"]}</b></td></tr>";
+			echo "<tr><td><img src=\"images/steps.png\" alt=\"Steps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["steps"]}</td>";
+			echo "<td><img src=\"images/mines.png\" alt=\"Mines\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["mines"]}</td></tr>";
+			echo "<tr><td><img src=\"images/jumps.png\" alt=\"Jumps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["jumps"]}</td>";
+			echo "<td><img src=\"images/hands.png\" alt=\"Hands\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["hands"]}</td></tr>";
+			echo "<tr><td><img src=\"images/holds.png\" alt=\"Holds\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["holds"]}</td>";
+			echo "<td><img src=\"images/rolls.png\" alt=\"Rolls\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["rolls"]}</td></tr>";
 		}
 	}
 		
@@ -485,14 +485,14 @@ foreach($songs as $song){
 					default:
 					  $color = "55, 55, 55";
 				  }
-			echo "<tr style=\"background-color: rgba({$color}, 0.2);\"><td>{$chart["difficulty"]}:</td><td><b>{$chart["meter"]}</b></td><td colspan=2>";
+			echo "<tr style=\"background-color: rgba({$color}, 0.2);\"><td style=\"text-align: right;\">{$chart["difficulty"]}:</td><td style=\"text-align: center;\"><b>{$chart["meter"]}</b></td><td colspan=2>";
 			if($chart["credit"] != ""){echo " ({$chart["credit"]})</b></td>";}else{echo "</td></tr>";}
-			echo "<tr><td>Steps</td><td><b>{$chart["steps"]}</b></td>";
-			echo "<td>Mines</td><td><b>{$chart["mines"]}</b></td></tr>";
-			echo "<tr><td>Jumps</td><td><b>{$chart["jumps"]}</b></td>";
-			echo "<td>Hands</td><td><b>{$chart["hands"]}</b></td></tr>";
-			echo "<tr><td>Holds</td><td><b>{$chart["holds"]}</b></td>";
-			echo "<td>Rolls</td><td><b>{$chart["rolls"]}</b></td></tr>";
+			echo "<tr><td><img src=\"images/steps.png\" alt=\"Steps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["steps"]}</td>";
+			echo "<td><img src=\"images/mines.png\" alt=\"Mines\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["mines"]}</td></tr>";
+			echo "<tr><td><img src=\"images/jumps.png\" alt=\"Jumps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["jumps"]}</td>";
+			echo "<td><img src=\"images/hands.png\" alt=\"Hands\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["hands"]}</td></tr>";
+			echo "<tr><td><img src=\"images/holds.png\" alt=\"Holds\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["holds"]}</td>";
+			echo "<td><img src=\"images/rolls.png\" alt=\"Rolls\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["rolls"]}</td></tr>";
 		}
 	}
 

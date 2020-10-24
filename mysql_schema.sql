@@ -1,4 +1,3 @@
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8 */;
 /*!50503 SET NAMES utf8mb4 */;
@@ -72,6 +71,7 @@ CREATE TABLE IF NOT EXISTS `sm_notedata` (
   KEY `song_id` (`song_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+-- Data exporting was unselected.
 
 -- Dumping structure for table SMsonglist.sm_requestors
 CREATE TABLE IF NOT EXISTS `sm_requestors` (
@@ -84,6 +84,7 @@ CREATE TABLE IF NOT EXISTS `sm_requestors` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Data exporting was unselected.
 
 -- Dumping structure for table SMsonglist.sm_requests
 CREATE TABLE IF NOT EXISTS `sm_requests` (
@@ -100,6 +101,7 @@ CREATE TABLE IF NOT EXISTS `sm_requests` (
   KEY `song_id` (`song_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Data exporting was unselected.
 
 -- Dumping structure for table SMsonglist.sm_scores
 CREATE TABLE IF NOT EXISTS `sm_scores` (
@@ -110,8 +112,6 @@ CREATE TABLE IF NOT EXISTS `sm_scores` (
   `pack` text COLLATE utf8_bin DEFAULT NULL,
   `stepstype` mediumtext COLLATE utf8_bin DEFAULT NULL,
   `difficulty` text COLLATE utf8_bin DEFAULT NULL,
-  `numplayed` smallint(6) DEFAULT NULL,
-  `lastplayed` date DEFAULT NULL,
   `username` tinytext COLLATE utf8_bin DEFAULT NULL,
   `grade` tinytext COLLATE utf8_bin DEFAULT NULL,
   `score` bigint(20) DEFAULT NULL,
@@ -156,6 +156,7 @@ CREATE TABLE IF NOT EXISTS `sm_scores` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC;
 
+-- Data exporting was unselected.
 
 -- Dumping structure for table SMsonglist.sm_songs
 CREATE TABLE IF NOT EXISTS `sm_songs` (
@@ -165,9 +166,11 @@ CREATE TABLE IF NOT EXISTS `sm_songs` (
   `artist` mediumtext DEFAULT NULL,
   `pack` mediumtext DEFAULT NULL,
   `strippedtitle` mediumtext DEFAULT NULL,
+  `strippedsubtitle` mediumtext DEFAULT NULL,
   `strippedartist` mediumtext DEFAULT NULL,
   `song_dir` mediumtext DEFAULT NULL,
-  `display_bpm` smallint(6) DEFAULT NULL,
+  `credit` text DEFAULT NULL,
+  `display_bpm` varchar(50) DEFAULT NULL,
   `music_length` decimal(10,0) DEFAULT NULL,
   `bga` bit(1) DEFAULT NULL,
   `installed` bit(1) DEFAULT NULL,
@@ -177,16 +180,24 @@ CREATE TABLE IF NOT EXISTS `sm_songs` (
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
+-- Data exporting was unselected.
 
 -- Dumping structure for table SMsonglist.sm_songsplayed
 CREATE TABLE IF NOT EXISTS `sm_songsplayed` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `song_id` int(11) DEFAULT NULL,
+  `song_dir` text DEFAULT NULL,
   `request_id` int(11) DEFAULT NULL,
-  `played` datetime DEFAULT NULL,
+  `stepstype` text DEFAULT NULL,
+  `difficulty` text DEFAULT NULL,
+  `username` varchar(50) DEFAULT NULL,
+  `numplayed` int(11) DEFAULT NULL,
+  `lastplayed` datetime DEFAULT NULL,
+  `datetime` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- Data exporting was unselected.
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

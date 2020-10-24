@@ -112,7 +112,18 @@ function parseNotedata($file) {
 					array_key_exists('#DESCRIPTION',$lines) ? : $lines['#DESCRIPTION'] = "";
 					array_key_exists('#CHARTSTYLE',$lines)  ? : $lines['#CHARTSTYLE']  = "";
 					array_key_exists('#CREDIT',$lines)      ? : $lines['#CREDIT']      = "";
-					array_key_exists('#DISPLAYBPM',$lines)  ? : $lines['#DISPLAYBPM']  = "";
+					
+					if( array_key_exists('#DISPLAYBPM',$lines)){
+						if( strpos($lines['#DISPLAYBPM'],':') > 0){
+							$display_bpmSplit = array();
+							$display_bpmSplit = preg_split("/:/",$lines['#DISPLAYBPM']);
+							$lines['#DISPLAYBPM'] = intval($display_bpmSplit[0],0)."-".intval($display_bpmSplit[1],0);
+						}else{
+							$lines['#DISPLAYBPM'] = intval($lines['#DISPLAYBPM'],0);
+						}
+					}else{
+						  $lines['#DISPLAYBPM']  = "";
+					}
 					
 					$notedata_array[] = array('chartname' => $lines['#CHARTNAME'], 'steptype' => $lines['#STEPSTYPE'], 'description' => $lines['#DESCRIPTION'], 'chartstyle' => $lines['#CHARTSTYLE'], 'difficulty' => $lines['#DIFFICULTY'], 'meter' => $lines['#METER'], 'radarvalues' => $lines['#RADARVALUES'], 'credit' => $lines['#CREDIT'], 'displaybpm' => $lines['#DISPLAYBPM'], 'stepfilename' => $lines['#STEPFILENAME']);
 
@@ -139,14 +150,15 @@ $new_songs_added = 0;
 $new_song_error = 0;
 $updated_songs = 0;
 $installed_array = array();
+$initial_array = array();
 
-//reset "installed" field to FALSE so that we can have an acurate correlation between db and sm5
-//this will temporarily make the songlist look empty. DON'T PANIC!
-//once songs are found or added to the db, "installed" will be set to 1/TRUE
-$sql_clear = "UPDATE sm_songs SET installed = 0";
-if (!mysqli_query($conn, $sql_clear)) {
-		echo "Error: " . $sql_clear . "\n" . mysqli_error($conn);
-	}
+//save all IDs to an array to later compare to all scraped song IDs.
+//The difference will be songs that were not found, thus "not installed"
+$sql_initial = "SELECT id FROM sm_songs";
+$res = mysqli_query($conn, $sql_initial);
+while ($row = mysqli_fetch_assoc($res)){
+	$initial_array[] = $row['id'];
+}
 
 foreach ($files as $file){
 	
@@ -193,6 +205,17 @@ foreach ($files as $file){
 			}
 
 	//		
+	
+	//Get pack
+
+		$pack = substr($song_dir, 0, strripos($song_dir, "/"));
+		$pack = substr($pack, strripos($pack, "/")+1);
+		//if the pack is on ignore list, skip it
+		if (in_array($pack,$packsIgnore)){
+			continue;
+		}
+		
+	//
 	
 	//Get title
 		if( !isset($metadata['#TITLETRANSLIT']) || empty($metadata['#TITLETRANSLIT'])){
@@ -248,14 +271,6 @@ foreach ($files as $file){
 		
 	//
 
-	//Get pack
-
-		$pack = substr($song_dir, 0, strripos($song_dir, "/"));
-		$pack = substr($pack, strripos($pack, "/")+1);
-		//echo $pack . "\n";
-		
-	//
-
 	//Get artist
 		
 		if( !isset($metadata['#ARTISTTRANSLIT']) || empty($metadata['#ARTISTTRANSLIT'])){
@@ -286,8 +301,14 @@ foreach ($files as $file){
 			$display_bpm = substr($metadata['#BPMS'],$displaybpmstart);
 			}
 
-		$display_bpm = trim($display_bpm);
-		$display_bpm = intval($display_bpm,0);
+		if( strpos($display_bpm,':') > 0){
+			$display_bpmSplit = array();
+			$display_bpmSplit = preg_split("/:/",$display_bpm);
+			$display_bpm = intval($display_bpmSplit[0],0)."-".intval($display_bpmSplit[1],0);
+		}else{
+			$display_bpm = trim($display_bpm);
+			$display_bpm = intval($display_bpm,0);
+		}
 
 	//
 
@@ -311,6 +332,17 @@ foreach ($files as $file){
 		}
 			
 	//
+
+	//Get song credit
+		
+	if( isset($metadata['#CREDIT']) && !empty($metadata['#CREDIT'])){
+		//song has a credit
+		$song_credit = $metadata['#CREDIT'];
+	}else{
+		$song_credit = "";
+	}
+		
+	//
 		
 		//echo "$title by $artist from $pack\n";
 		//check if this song exists in the db
@@ -325,7 +357,7 @@ foreach ($files as $file){
 			$new_songs_added++;
 			echo "Adding to DB: ".stripslashes($title)." from ".stripslashes($pack)." \n";
 
-			$sql_songs_query = "INSERT INTO sm_songs (title, subtitle, artist, pack, strippedtitle, strippedartist, song_dir, display_bpm, music_length, bga, installed, added, checksum) VALUES (\"$title\", \"$subtitle\", \"$artist\", \"$pack\", \"$strippedtitle\", \"$strippedartist\", \"$song_dir/\", {$display_bpm}, {$music_length}, {$bga}, {$installed}, NOW(), \"$file_hash\")";
+			$sql_songs_query = "INSERT INTO sm_songs (title, subtitle, artist, pack, strippedtitle, strippedsubtitle, strippedartist, song_dir, credit, display_bpm, music_length, bga, installed, added, checksum) VALUES (\"$title\", \"$subtitle\", \"$artist\", \"$pack\", \"$strippedtitle\", \"$strippedsubtitle\", \"$strippedartist\", \"$song_dir/\", \"$song_credit\", {$display_bpm}, {$music_length}, {$bga}, {$installed}, NOW(), \"$file_hash\")";
 			
 			if (!mysqli_query($conn, $sql_songs_query)) {
 				echo "Error: " . $sql_songs_query . "\n" . mysqli_error($conn) . "\n";
@@ -355,7 +387,7 @@ foreach ($files as $file){
 					//echo "File Hash: ".$file_hash." != Stored Hash: ".$stored_hash."\n";
 					$updated_songs++;
 					$sql_songs_query = "UPDATE sm_songs SET 
-					title=\"$title\", subtitle=\"$subtitle\", artist=\"$artist\", pack=\"$pack\", strippedtitle=\"$strippedtitle\", strippedartist=\"$strippedartist\", display_bpm={$display_bpm}, music_length={$music_length}, bga={$bga}, installed=1, checksum=\"$file_hash\" 
+					title=\"$title\", subtitle=\"$subtitle\", artist=\"$artist\", pack=\"$pack\", strippedtitle=\"$strippedtitle\", strippedsubtitle=\"$strippedsubtitle\", strippedartist=\"$strippedartist\", credit=\"$song_credit\", display_bpm={$display_bpm}, music_length={$music_length}, bga={$bga}, installed=1, checksum=\"$file_hash\" 
 					WHERE id={$song_id}";
 			
 				echo "Changes detected in {$song_id}: ".stripslashes($title)." from ".stripslashes($pack)." Updating...\n";
@@ -398,9 +430,16 @@ $i++;
 }
 
 // After scraping all songs, update the existing and new songs as "installed"
-	if(!empty($installed_array)){
-	$sql_update = "UPDATE sm_songs SET installed = 1 WHERE id IN (".implode(",",$installed_array).")";
-	//echo $sql_update."\n";
+	if(!empty($installed_array) && !empty($initial_array)){
+		$ids1 = implode(",",$installed_array);
+		$sql_update = "UPDATE sm_songs SET installed = 1 WHERE id IN ({$ids1})";
+		if (!mysqli_query($conn, $sql_update)) {
+			echo "Error: " . $sql_update . "\n" . mysqli_error($conn);
+		}	
+	// the difference of these values are the "not installed" songs and will be set as installed = 0	
+		$ids0 = array_values(array_diff($initial_array,$installed_array));
+		$ids0 = implode(",",$ids0);
+		$sql_update = "UPDATE sm_songs SET installed = 0 WHERE id IN ({$ids0})";
 		if (!mysqli_query($conn, $sql_update)) {
 			echo "Error: " . $sql_update . "\n" . mysqli_error($conn);
 		}
@@ -410,16 +449,16 @@ $i++;
 
 //Let's show some stats!
 
-$db_inactive = mysqli_fetch_assoc( mysqli_query( $conn, "SELECT COUNT(id) AS id FROM sm_songs WHERE installed=0" ) )['id'];
+//$db_inactive = mysqli_fetch_assoc( mysqli_query( $conn, "SELECT COUNT(id) AS id FROM sm_songs WHERE installed=0" ) )['id'];
 echo "Scraped {$i} cache file(s) adding {$new_songs_added} new song(s) and updating {$updated_songs} song(s) to the existing ".count($installed_array)." songs in the database! \n";
-echo "{$db_inactive} song(s) marked as 'not installed' and there were errors with {$new_song_error} song(s). \n";
+echo count(explode(',',$ids0))." song(s) marked as 'not installed' and there were errors with {$new_song_error} song(s). \n";
 
 //
 
 // Let's clean up the sm_songs db, removing records that are not installed, have never been requested, never played, or don't have a recorded score
 	//echo "Purging song database and cleaning up...";
 	//$sql_purge = "DELETE FROM sm_songs 
-	//			WHERE NOT EXISTS(SELECT NULL FROM sm_requests WHERE sm_requests.song_id = sm_songs.id LIMIT 1) AND NOT EXISTS (SELECT NULL FROM sm_scores WHERE //sm_scores.song_id = sm_songs.id LIMIT 1) AND sm_songs.installed<>1";
+	//			WHERE NOT EXISTS(SELECT NULL FROM sm_requests WHERE sm_requests.song_id = sm_songs.id LIMIT 1) AND NOT EXISTS (SELECT NULL FROM sm_scores WHERE sm_scores.song_id = sm_songs.id LIMIT 1) AND NOT EXISTS (SELECT NULL FROM sm_songsplayed WHERE sm_songsplayed.song_id = sm_songs.id LIMIT 1) AND sm_songs.installed<>1";
 	//if (!mysqli_query($conn, $sql_purge)) {
 	//		echo "Error: " . $sql_purge . "\n" . mysqli_error($conn);
 	//	}

@@ -1,6 +1,7 @@
 <?php
 
 include("config.php");
+include("misc_functions.php");
 
 if(!isset($_GET["security_key"]) || $_GET["security_key"] != $security_key){
     die("Fuck off");
@@ -17,98 +18,14 @@ if(!isset($_GET["song"]) && !isset($_GET["songid"]) && !isset($_GET["cancel"]) &
 	die();
 }
 
-function add_user($userid, $user){
+function check_banned($song_id, $user){
 
 	global $conn;
-	
-	$user = strtolower($user);
-	$sql = "INSERT INTO sm_requestors (twitchid, name, dateadded) VALUES (\"$userid\", \"$user\", NOW())";
-	$retval = mysqli_query( $conn, $sql );
-	$the_id = mysqli_insert_id($conn);
-
-	return($the_id);
-
-}
-
-function check_user($userid, $user){
-
-        global $conn;
-		
-		$user = strtolower($user);
-		
-		//case where the bot cannot supply the twitchid, use the name
-		if($userid > 0 || !empty($userid)){
-			$sql0 = "SELECT * FROM sm_requestors WHERE twitchid = \"$userid\"";
-		}else{
-			$sql0 = "SELECT * FROM sm_requestors WHERE name = \"$user\"";
+	$sql0 = "SELECT * FROM sm_songs WHERE installed=1 AND id = '{$song_id}' LIMIT 1";
+	if( mysqli_fetch_assoc( mysqli_query( $conn,$sql0))['banned'] == 1)
+		{
+		die("I'm sorry $user, but I'm afraid I can't do that.");
 		}
-        $retval0 = mysqli_query( $conn, $sql0 );
-        $numrows = mysqli_num_rows($retval0);
-
-        if($numrows != 0){
-		//User exists in DB, return data
-		$row0 = mysqli_fetch_assoc($retval0);
-		$id = $row0["id"];
-		$twitchid = $row0["twitchid"];
-		$whitelisted = $row0["whitelisted"];
-		$banned = $row0["banned"];
-        }else{
-		//User is new - create then return data
-		$id = add_user($userid, $user);
-		$whitelisted = "false";
-		$banned = "false";
-	}
-
-	$userobj["id"] = "$id";
-	$userobj["name"] = "$user";
-	$userobj["twitchid"] = "$userid";
-	$userobj["whitelisted"] = "$whitelisted";
-	$userobj["banned"] = "$banned";
-
-	return($userobj);
-
-}
-
-function check_length(){
-	global $conn;
-	$sql0 = "SELECT state FROM sm_requests ORDER BY request_time DESC LIMIT 10";
-    $retval0 = mysqli_query( $conn, $sql0 );
-	$length = 0;
-	foreach($retval0 as $row){
-		if($row['state'] == 'requested'){
-			$length++;
-		}
-	}
-	return $length;
-}
-
-function check_cooldown($user){
-
-	//check total of active requests. stop at +10
-	$length = check_length();
-	
-	if($length > 10){
-		die("Too many songs on the request list! Try again in a few minutes.");
-	}
-    $interval = 0.75 * $length;
-		
-		global $conn;
-        $sql0 = "SELECT * FROM sm_requests WHERE state <> \"canceled\" AND requestor = \"$user\" AND request_time > DATE_SUB(NOW(), INTERVAL {$interval} MINUTE)";
-        $retval0 = mysqli_query( $conn, $sql0 );
-	$numrows = mysqli_num_rows($retval0);
-	if($numrows != 0){
-		die("Slow down there, part'ner! Try again in ".ceil($interval)." minutes");
-	}
-}
-
-function check_banned($song_id){
-
-        global $conn;
-        $sql0 = "SELECT * FROM sm_songs WHERE installed=1 AND id = '{$song_id}' LIMIT 1";
-		if( mysqli_fetch_assoc( mysqli_query( $conn,$sql0))['banned'] == 1)
-			{
-			die("This song was put on the naughty list and cannot be requested!");
-			}
 }
 
 function request_song($song_id, $requestor, $tier, $twitchid, $broadcaster){
@@ -124,7 +41,7 @@ function request_song($song_id, $requestor, $tier, $twitchid, $broadcaster){
 
 	global $conn;
 	
-	check_banned($song_id);
+	check_banned($song_id, $requestor);
 
 	$sql0 = "SELECT COUNT(*) AS total FROM sm_requests WHERE song_id = '{$song_id}' AND state <> 'canceled' AND request_time > DATE_SUB(NOW(), INTERVAL 1 HOUR)";
 	$retval0 = mysqli_query( $conn, $sql0 );
@@ -138,6 +55,14 @@ function request_song($song_id, $requestor, $tier, $twitchid, $broadcaster){
    $conn = mysqli_connect(dbhost, dbuser, dbpass, db);
    if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
 
+//check if the active channel category/game is StepMania, etc.
+if(isset($_GET["game"])){
+	$game = $_GET["game"];
+    if(in_array($game,$categoryGame)==FALSE){
+        die("Hmmm...I don't think it's possible to request songs in ".$game.".");
+    }
+}
+
 $user = $_GET["user"];
 $tier = $_GET["tier"];
 if(isset($_GET["userid"])){
@@ -145,6 +70,10 @@ if(isset($_GET["userid"])){
 }else{
 	$twitchid = 0;
 }
+
+//if(empty($_GET["song"]) || empty($_GET["songid"])){
+//	die("$user did not specify a song or songID.");
+//}
 
 //get broadcaster
 if(isset($_GET["broadcaster"])){
@@ -157,10 +86,11 @@ $userobj = check_user($twitchid, $user);
 
 if(isset($_GET["cancel"])){
 	
-	if (!empty($_GET["cancel"]) && is_numeric($_GET["cancel"])){
+	if (!empty($_GET["cancel"]) && is_numeric($_GET["cancel"]) && $_GET["cancel"] > 0){
 		$num = $_GET["cancel"] - 1;
 	}else{
-		$num = 0;
+		//$num = 0;
+		die("Good one, ".$user. ", but only positive integers are allowed!");
 	}
 
         $sql = "SELECT * FROM sm_requests WHERE requestor = '{$user}' AND state <> 'canceled' AND state <> 'skipped' ORDER BY request_time DESC LIMIT 1 OFFSET {$num}";
@@ -189,13 +119,12 @@ die();
 }
 
 if(isset($_GET["skip"])){
-	
-	//if(strtolower($user) !== $broadcaster){die("That's gonna be a no from me, dawg.");}
 
 	if (!empty($_GET["skip"]) && is_numeric($_GET["skip"])){
 		$num = $_GET["skip"] - 1;
 	}else{
-		$num = 0;
+		//$num = 0;
+		die("Nice try, ".$user. ", but only positive integers are allowed!");
 	}
 
 	$sql = "SELECT * FROM sm_requests WHERE state <> \"canceled\" AND state <> \"skipped\" ORDER BY request_time DESC LIMIT 1 OFFSET {$num}";
@@ -242,7 +171,7 @@ if(isset($_GET["song"])){
 	$song = clean($song);
 
 	//Determine if there's a song with this exact title. If someone requested "Tsugaru", this would match "TSUGARU" but would not match "TSUGARU (Apple Mix)"
-        $sql = "SELECT * FROM sm_songs WHERE strippedtitle=\"$song\" AND installed = 1 ORDER BY title ASC, pack ASC";
+        $sql = "SELECT * FROM sm_songs WHERE IF(strippedsubtitle is NULL OR strippedsubtitle='',strippedtitle,CONCAT(strippedtitle,'-',strippedsubtitle))=\"$song\" AND installed = 1 ORDER BY title ASC, pack ASC";
         $retval = mysqli_query( $conn, $sql );
 
 	if (mysqli_num_rows($retval) == 1) {
@@ -255,10 +184,10 @@ if(isset($_GET["song"])){
 	}
 
         $sql = "SELECT sm_songs.id AS id,sm_songs.title AS title,sm_songs.subtitle AS subtitle,sm_songs.pack AS pack FROM sm_songs 
-				LEFT JOIN sm_scores ON sm_songs.id = sm_scores.song_id 
-				WHERE strippedtitle LIKE \"%$song%\" AND installed = 1 
+				LEFT JOIN sm_songsplayed ON sm_songs.id = sm_songsplayed.song_id 
+				WHERE IF(strippedsubtitle is NULL OR strippedsubtitle='',strippedtitle,CONCAT(strippedtitle,'-',strippedsubtitle)) LIKE \"%$song%\" AND installed = 1 
 				GROUP BY sm_songs.id 
-				ORDER BY MAX(sm_scores.numplayed) DESC, title ASC, pack ASC";
+				ORDER BY SUM(sm_songsplayed.numplayed) DESC, title ASC, pack ASC";
         $retval = mysqli_query( $conn, $sql );
 
 if (mysqli_num_rows($retval) == 1) {
@@ -279,7 +208,7 @@ if (mysqli_num_rows($retval) > 0) {
 	$i++;
     }
 } elseif (is_numeric($song)) {
-	echo "Did you mean to use !requestid $song?";
+	echo "Did you mean to use !requestid ".$song."?";
 }else{
 	echo "Didn't find any songs matching that name! Check the !songlist.";
 }

@@ -16,12 +16,16 @@ $uploaddir = '/var/www/html/sm5/images/packs';
 //This way people can't hit your endpoints directly without permission.
 $security_key = 'any-secret-here';
 
+//List of games or channel categories that must be set as the "current game" on Twitch for the bot to work.
+//This is used as a backup if your bot does not support per game custom commands.
+$categoryGame = array('StepMania');
+
 //Broadcaster List. Define an array to associate broadcaster names with StepMania profile names.
 //This is only required if your StepMania setup is used by more than 1 twitch account.
 $broadcasters = array(
 						//twitch id			//SM5 profile
 						'ddrdave' 		=> 	'Dave',
-						'mrtwinkles' => 	'MRT'
+						'mrtwinkles47' => 	'MRT'
 					 );
 
 ?>
