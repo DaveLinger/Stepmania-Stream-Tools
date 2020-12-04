@@ -47,4 +47,7 @@ $songsDir = '/var/www/smdir/Songs';
 //Target url for uploading banner images to the server. This directory MUST exist before uploading banners.
 $target_url = 'http://apache/banners.php';
 
+//list of song packs/groups to ignore while scraping
+$packsIgnore = array('~WIP');
+
 ?>
