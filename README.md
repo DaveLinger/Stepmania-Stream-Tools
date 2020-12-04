@@ -1,5 +1,5 @@
 # What's Different in this Fork?
-This is my fork of the project for the MrTwinklesDDR and Danizom813 Twitch channels. The main differences in this fork are mostly methodology and optimizations of certain existing features.
+This is my fork of the project for the MrTwinkles47 and Danizom813 Twitch channels. The main differences in this fork are mostly methodology and optimizations of certain existing features.
 
 A quick summary:
 * Support for multiple channels/broadcasters with a single SM5 instance and song database.

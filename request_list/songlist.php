@@ -8,9 +8,9 @@
 <link rel="icon" 
       type="image/png" 
       href="images/ddr_arrow.png">
+<meta name="robots" content="noindex,nofollow">	  
 <style>
 	body {
-		background-image: url("images/extreme_bg.jpg");
 		background-color:#303030;
 	}
 </style>
@@ -177,7 +177,7 @@ $total_rows = mysqli_fetch_array($result)[0];
 $total_pages = ceil($total_rows / $no_of_records_per_page);
 
 //build mysql query as a string
-$base_sql = "SELECT sm_songs.id,trim(concat(title,' ',subtitle,IF(bga=1,'  [V]',''))) AS title,music_length,added,artist,pack,sec_to_time(music_length) AS LENGTH,IF(sm_songs.display_bpm>0,sm_songs.display_bpm,NULL) AS BPM, 
+$base_sql = "SELECT sm_songs.id AS id,trim(concat(title,' ',subtitle,IF(bga=1,'  [V]',''))) AS title,music_length,added,artist,pack,sec_to_time(music_length) AS LENGTH,IF(sm_songs.display_bpm>0,sm_songs.display_bpm,NULL) AS BPM, 
 max(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Beginner' then sm_notedata.credit END) AS credit_BSP, 
 max(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Easy' then sm_notedata.credit END) AS credit_ESP, 
 max(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Medium' then sm_notedata.credit END) AS credit_MSP, 
@@ -226,18 +226,18 @@ max(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficul
 max(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Hard' then sm_notedata.radar_values END) AS radar_HDP, 
 max(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Challenge' then sm_notedata.radar_values END) AS radar_CDP, 
 max(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Edit' then sm_notedata.radar_values END) AS radar_XDP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Beginner' then sm_notedata.meter END) AS meter_BSP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Easy' then sm_notedata.meter END) AS meter_ESP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Medium' then sm_notedata.meter END) AS meter_MSP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Hard' then sm_notedata.meter END) AS meter_HSP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Challenge' then sm_notedata.meter END) AS meter_CSP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Edit' then sm_notedata.meter END) AS meter_XSP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Beginner' then sm_notedata.meter END) AS meter_BDP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Easy' then sm_notedata.meter END) AS meter_EDP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Medium' then sm_notedata.meter END) AS meter_MDP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Hard' then sm_notedata.meter END) AS meter_HDP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Challenge' then sm_notedata.meter END) AS meter_CDP, 
-sum(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Edit' then sm_notedata.meter END) AS meter_XDP
+MAX(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Beginner' then sm_notedata.meter END) AS meter_BSP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Easy' then sm_notedata.meter END) AS meter_ESP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Medium' then sm_notedata.meter END) AS meter_MSP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Hard' then sm_notedata.meter END) AS meter_HSP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Challenge' then sm_notedata.meter END) AS meter_CSP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-single' AND sm_notedata.difficulty LIKE 'Edit' then sm_notedata.meter END) AS meter_XSP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Beginner' then sm_notedata.meter END) AS meter_BDP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Easy' then sm_notedata.meter END) AS meter_EDP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Medium' then sm_notedata.meter END) AS meter_MDP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Hard' then sm_notedata.meter END) AS meter_HDP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Challenge' then sm_notedata.meter END) AS meter_CDP, 
+MAX(case when sm_notedata.stepstype LIKE 'dance-double' AND sm_notedata.difficulty LIKE 'Edit' then sm_notedata.meter END) AS meter_XDP
 FROM sm_songs
 JOIN sm_notedata ON sm_songs.id=sm_notedata.song_id
 WHERE stepstype NOT LIKE 'lights-cabinet' AND sm_songs.installed = 1 AND (
@@ -350,6 +350,7 @@ while ($row = mysqli_fetch_array($result)) {
 	$songs["$s_id"]["bpm"]=$row["BPM"];
 	$songs["$s_id"]["length"]=$row["LENGTH"];
 
+	
 	foreach($charts as $difficulty){
 		$songs["$s_id"]["charts"]["$difficulty"]["meter"]=$row["meter_$difficulty"];
 		$songs["$s_id"]["charts"]["$difficulty"]["credit"]=$row["credit_$difficulty"];
@@ -362,22 +363,23 @@ while ($row = mysqli_fetch_array($result)) {
 			$songs["$s_id"]["charts"]["$difficulty"]["groove_radar"] = "$exploded_radar[0], $exploded_radar[4], $exploded_radar[3], $exploded_radar[2], $exploded_radar[1]";
 			$songs["$s_id"]["charts"]["$difficulty"]["steps"] = round($exploded_radar[6]);
 			$songs["$s_id"]["charts"]["$difficulty"]["jumps"] = round($exploded_radar[7]);
+			$songs["$s_id"]["charts"]["$difficulty"]["holds"] = round($exploded_radar[8]);
 			$songs["$s_id"]["charts"]["$difficulty"]["mines"] = round($exploded_radar[9]);
 			$songs["$s_id"]["charts"]["$difficulty"]["hands"] = round($exploded_radar[10]);
 			$songs["$s_id"]["charts"]["$difficulty"]["rolls"] = round($exploded_radar[11]);
 			switch($difficulty){
-				case "BSP": $songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Beginner"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "single"; break;
-				case "ESP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Easy"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "single"; break;
-				case "MSP": $songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Medium"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "single";	break;
-				case "HSP": $songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Hard"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "single"; break;
-				case "CSP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Challenge"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "single"; break;
-				case "XSP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Edit"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "single"; break;
-				case "BDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Beginner"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "double"; break;
-				case "EDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Easy"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "double"; break;
-				case "MDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Medium"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "double"; break;
-				case "HDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Hard"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "double"; break;
-				case "CDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Challenge"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "double"; break;
-				case "XDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Edit"; $songs["$s_id"]["charts"]["$difficulty"]["mode"] = "double"; break;
+				case "BSP": $songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Beginner"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-single"; break;
+				case "ESP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Easy"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-single"; break;
+				case "MSP": $songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Medium"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-single";	break;
+				case "HSP": $songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Hard"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-single"; break;
+				case "CSP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Challenge"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-single"; break;
+				case "XSP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Edit"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-single"; break;
+				case "BDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Beginner"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-double"; break;
+				case "EDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Easy"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-double"; break;
+				case "MDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Medium"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-double"; break;
+				case "HDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Hard"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-double"; break;
+				case "CDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Challenge"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-double"; break;
+				case "XDP":	$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "Edit"; $songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "dance-double"; break;
 				default:
 					echo "";
 			}
@@ -385,11 +387,12 @@ while ($row = mysqli_fetch_array($result)) {
 			$songs["$s_id"]["charts"]["$difficulty"]["groove_radar"] = "";
 			$songs["$s_id"]["charts"]["$difficulty"]["steps"] = "";
 			$songs["$s_id"]["charts"]["$difficulty"]["jumps"] = "";
+			$songs["$s_id"]["charts"]["$difficulty"]["holds"] = "";
 			$songs["$s_id"]["charts"]["$difficulty"]["mines"] = "";
 			$songs["$s_id"]["charts"]["$difficulty"]["hands"] = "";
 			$songs["$s_id"]["charts"]["$difficulty"]["rolls"] = "";
 			$songs["$s_id"]["charts"]["$difficulty"]["difficulty"] = "";
-			$songs["$s_id"]["charts"]["$difficulty"]["mode"] = "";
+			$songs["$s_id"]["charts"]["$difficulty"]["stepstype"] = "";
 		}
 	}
 
@@ -420,30 +423,89 @@ foreach($songs as $song){
 
 	echo "</tr>
 	<tr style=\"display:none;\" id=\"{$song["id"]}\">
-		<td colspan=3>";
+		<td colspan=2>
+		<table class=\"w3-small\" style=\"padding: 0px 0px\">
+		<tr><td colspan=4 class=\"w3-center\"><b>DANCE-SINGLE</b></td></tr>";
 
 	foreach($song["charts"] as $difficulty=>$chart){
-		if($chart["meter"] != ""){
+		if($chart["meter"] != "" && $chart["stepstype"] == "dance-single"){		
 			//There is a chart for $difficulty.
-			echo "{$chart["difficulty"]}: <b>{$chart["meter"]}</b><br />";
-			if($chart["steps"] != ""){echo "&nbsp;&nbsp;&nbsp;Steps: <b>{$chart["steps"]}</b><br />";}
-			if($chart["jumps"] != ""){echo "&nbsp;&nbsp;&nbsp;Jumps: <b>{$chart["jumps"]}</b><br />";}
-			if($chart["mines"] != ""){echo "&nbsp;&nbsp;&nbsp;Mines: <b>{$chart["mines"]}</b><br />";}
-			if($chart["hands"] != ""){echo "&nbsp;&nbsp;&nbsp;Hands: <b>{$chart["hands"]}</b><br />";}
-			if($chart["rolls"] != ""){echo "&nbsp;&nbsp;&nbsp;Rolls: <b>{$chart["rolls"]}</b><br />";}
-			if($chart["credit"] != ""){echo "&nbsp;&nbsp;&nbsp;Credit: <b>{$chart["credit"]}</b><br />";}
+			switch ($chart["difficulty"]) {
+					case "Beginner":
+					  $color = "0, 255, 255";
+					  break;
+					case "Easy":
+					  $color = "251, 169, 0";
+					  break;
+					case "Medium":
+					  $color = "250, 0, 160";
+					  break;
+					case "Hard":
+					  $color = "102, 250, 0";
+					  break;
+					case "Challenge":
+					  $color = "112, 104, 250";
+					  break;
+					default:
+					  $color = "55, 55, 55";
+				  }
+			echo "<tr style=\"background-color: rgba({$color}, 0.2);\"><td style=\"text-align: right;\">{$chart["difficulty"]}:</td><td style=\"text-align: center;\"><b>{$chart["meter"]}</b></td><td colspan=2>";
+			if($chart["credit"] != ""){echo " ({$chart["credit"]})</b></td>";}else{echo "</td></tr>";}
+			echo "<tr><td><img src=\"images/steps.png\" alt=\"Steps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["steps"]}</td>";
+			echo "<td><img src=\"images/mines.png\" alt=\"Mines\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["mines"]}</td></tr>";
+			echo "<tr><td><img src=\"images/jumps.png\" alt=\"Jumps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["jumps"]}</td>";
+			echo "<td><img src=\"images/hands.png\" alt=\"Hands\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["hands"]}</td></tr>";
+			echo "<tr><td><img src=\"images/holds.png\" alt=\"Holds\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["holds"]}</td>";
+			echo "<td><img src=\"images/rolls.png\" alt=\"Rolls\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["rolls"]}</td></tr>";
 		}
 	}
 		
-		echo "</td>
-		<td colspan=3></td>
-		<td colspan=12 style=\"height:1px;\">
+	echo "</table></td><td colspan=1><table class=\"w3-small\" style=\"padding: 0px 0px\">
+		<tr><td colspan=4 class=\"w3-center\"><b>DANCE-DOUBLE</b></td></tr>";
+
+	foreach($song["charts"] as $difficulty=>$chart){
+		if($chart["meter"] != "" && $chart["stepstype"] == "dance-double"){		
+			//There is a chart for $difficulty.
+			switch ($chart["difficulty"]) {
+					case "Beginner":
+					  $color = "0, 255, 255";
+					  break;
+					case "Easy":
+					  $color = "251, 169, 0";
+					  break;
+					case "Medium":
+					  $color = "250, 0, 160";
+					  break;
+					case "Hard":
+					  $color = "102, 250, 0";
+					  break;
+					case "Challenge":
+					  $color = "112, 104, 250";
+					  break;
+					default:
+					  $color = "55, 55, 55";
+				  }
+			echo "<tr style=\"background-color: rgba({$color}, 0.2);\"><td style=\"text-align: right;\">{$chart["difficulty"]}:</td><td style=\"text-align: center;\"><b>{$chart["meter"]}</b></td><td colspan=2>";
+			if($chart["credit"] != ""){echo " ({$chart["credit"]})</b></td>";}else{echo "</td></tr>";}
+			echo "<tr><td><img src=\"images/steps.png\" alt=\"Steps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["steps"]}</td>";
+			echo "<td><img src=\"images/mines.png\" alt=\"Mines\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["mines"]}</td></tr>";
+			echo "<tr><td><img src=\"images/jumps.png\" alt=\"Jumps\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["jumps"]}</td>";
+			echo "<td><img src=\"images/hands.png\" alt=\"Hands\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["hands"]}</td></tr>";
+			echo "<tr><td><img src=\"images/holds.png\" alt=\"Holds\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["holds"]}</td>";
+			echo "<td><img src=\"images/rolls.png\" alt=\"Rolls\" width=\"16\" height=\"16\" align=\"right\"></td><td>{$chart["rolls"]}</td></tr>";
+		}
+	}
+
+		//dance-single radar
+		echo "</table></td>
+		<td colspan=1></td>
+		<td colspan=6 style=\"height:1px;\">
 		<div class=\"chart-container\" style=\"position:relative; height:100%; min-height:200px; border:1px #000;\">
-			<canvas id=\"grooveRadar-{$song["id"]}\"></canvas>
+			<canvas id=\"grooveRadar-dance-single-{$song["id"]}\"></canvas>
 		</div>";
 
 		echo "<script>
-		var ctx = document.getElementById('grooveRadar-{$song["id"]}');
+		var ctx = document.getElementById('grooveRadar-dance-single-{$song["id"]}');
 		var myChart = new Chart(ctx, {
 			type: 'radar',
 			data: {
@@ -451,7 +513,7 @@ foreach($songs as $song){
 				datasets: [";
 
 		foreach($song["charts"] as $difficulty=>$chart){
-			if($chart["meter"] != "" && $chart["mode"] == "single"){
+			if($chart["meter"] != "" && $chart["stepstype"] == "dance-single"){
 				switch ($difficulty) {
 					case "BSP":
 					  $color = "0, 255, 255";
@@ -466,6 +528,83 @@ foreach($songs as $song){
 					  $color = "102, 250, 0";
 					  break;
 					case "CSP":
+					  $color = "112, 104, 250";
+					  break;
+					default:
+					  $color = "55, 55, 55";
+				  }
+				  echo "{
+					data: [{$chart["groove_radar"]}],
+					backgroundColor: [
+						'rgba($color, 0.4)'
+					],
+					borderColor: [
+						'rgba($color, 1)'
+					],
+					borderWidth: 2,
+					pointRadius: 0
+				},";
+			}
+		}
+		
+		echo "
+		]
+			},
+			options: {
+				scale: {
+					angleLines: {
+						display: true
+					},
+					ticks: {
+						suggestedMin: 0,
+						suggestedMax: 1,
+						display: false
+					}
+				},
+				legend: {
+					display: false
+				},
+				tooltips: {
+					enabled: false
+				},
+				responsive:true,
+				maintainAspectRatio: false
+			}
+		});
+		</script>";
+		
+	//dance-double radar
+	echo "</td>
+		
+		<td colspan=8 style=\"height:1px;\">
+		<div class=\"chart-container\" style=\"position:relative; height:100%; min-height:200px; border:1px #000;\">
+			<canvas id=\"grooveRadar-dance-double-{$song["id"]}\"></canvas>
+		</div>";
+
+		echo "<script>
+		var ctx = document.getElementById('grooveRadar-dance-double-{$song["id"]}');
+		var myChart = new Chart(ctx, {
+			type: 'radar',
+			data: {
+				labels: ['Stream', 'Chaos', 'Freeze', 'Air', 'Voltage'],
+				datasets: [";
+
+		foreach($song["charts"] as $difficulty=>$chart){
+			if($chart["meter"] != "" && $chart["stepstype"] == "dance-double"){
+				switch ($difficulty) {
+					case "BDP":
+					  $color = "0, 255, 255";
+					  break;
+					case "EDP":
+					  $color = "251, 169, 0";
+					  break;
+					case "MDP":
+					  $color = "250, 0, 160";
+					  break;
+					case "HDP":
+					  $color = "102, 250, 0";
+					  break;
+					case "CDP":
 					  $color = "112, 104, 255";
 					  break;
 					default:
@@ -511,7 +650,7 @@ foreach($songs as $song){
 		});
 		</script>";
 
-	echo "</td>
+	echo "</td>	
 	</tr>
 	";
 

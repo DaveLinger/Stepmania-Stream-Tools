@@ -29,6 +29,7 @@ function toggle_ban_song($song){
         if(mysqli_num_rows($retval0) == 1){
             $row0 = mysqli_fetch_assoc($retval0);
             $title = $row0["title"];
+            $pack = $row0["pack"];
             $banned = $row0["banned"];
 		if($banned == "1"){
 			$value = "0";
@@ -50,9 +51,9 @@ function toggle_ban_song($song){
 }
 
 //die if the command did not come from the broadcaster
-$user = $_GET["user"];
-$broadcaster = $_GET["broadcaster"];
-if(strtolower($user)!==$broadcaster){die("That's gonna be a no from me, dawg.");}
+//$user = $_GET["user"];
+//$broadcaster = $_GET["broadcaster"];
+//if(strtolower($user)!==$broadcaster){die("That's gonna be a no from me, dawg.");}
 
 if(isset($_GET["bansongid"])){
 	$song = $_GET["bansongid"];

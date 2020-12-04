@@ -20,6 +20,7 @@ if($_GET["security_key"] != $security_key){
 function format_pack($pack){
 	$pack = str_ireplace("Dance Dance Revolution","DDR",$pack);
 	$pack = str_ireplace("Dancing Stage","DS",$pack);
+	$pack = str_ireplace("In The Groove","ITG",$pack);
 	$pack = str_ireplace("Ben Speirs'","BS'",$pack);
 	$pack = str_ireplace("JBEAN Exclusives","JBEAN...",$pack);
 	$pack = preg_replace("/(\(.*\).\(.*\))$/","",$pack,1);
@@ -29,11 +30,8 @@ function format_pack($pack){
 return $pack;
 }   
 
-if(isset($_GET["broadcaster"])){
+if(!empty($_GET["broadcaster"])){
 	$broadcaster = $_GET["broadcaster"];
-	if(!array_key_exists($broadcaster,$broadcasters)){
-		$broadcaster = "%";
-	}
 }else{
 	$broadcaster = "%";
 }
@@ -104,7 +102,7 @@ function skipped(id){
 
 function refresh_data(){
 lastid = $("#lastid").html();
-url = "get_updates.php?security_key='.$security_key.'&id="+lastid;
+url = "get_updates.php?security_key='.$security_key.'&broadcaster='.urlencode($broadcaster).'&id="+lastid;
     $.ajax({url: url, success: function(result){
 		if(result){
 			result = JSON.parse(result);
@@ -156,7 +154,7 @@ $(function() {refresh_data();});
 }
 
         //$sql = "SELECT * FROM sm_requests WHERE state=\"requested\" OR state=\"completed\" ORDER BY request_time DESC LIMIT 10";
-        $sql = "SELECT * FROM sm_requests WHERE state=\"requested\" OR state=\"completed\" AND broadcaster LIKE \"{$broadcaster}\" ORDER BY request_time DESC LIMIT 10";
+        $sql = "SELECT * FROM sm_requests WHERE ((state=\"requested\" OR state=\"completed\") AND broadcaster LIKE \"{$broadcaster}\") ORDER BY request_time DESC LIMIT 10";
         $retval = mysqli_query( $conn, $sql );
 		  $i=0;
 

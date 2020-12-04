@@ -16,6 +16,7 @@ if(! $conn ) {die('Could not connect: ' . mysqli_error($conn));}
 function clean_user($user){
 	global $conn;
 	$user = trim(mysqli_real_escape_string($conn,$user));
+	$user = strtolower($user);
 	if (strpos($user,'@') == 0){
 		$user = substr($user,1);
 	}
@@ -42,7 +43,7 @@ function toggle_ban($user){
 			$response = "Unbanned $user. Don't be a dick.";
 		}else{
 			$value = "true";
-			$response = "Banned $user. I'm sorry--it's for the best.";
+			$response = "Banned $user. I'm sorry. it's for the best.";
 		}
 
 	        $sql = "UPDATE sm_requestors SET banned=\"$value\" WHERE id=\"$id\" LIMIT 1";
