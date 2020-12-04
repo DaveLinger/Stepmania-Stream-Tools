@@ -1,0 +1,17 @@
+{
+  "name": "chatbot",
+  "version": "1.0.0",
+  "description": "Chat bot to work with the Stepmania song request system",
+  "homepage": "https://github.com/DaveLinger/Stepmania-Stream-Tools/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DaveLinger/Stepmania-Stream-Tools"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "tmi.js": "^1.5.0"
+  },
+  "scripts": {
+    "start": "node bot.js"
+  }
+}

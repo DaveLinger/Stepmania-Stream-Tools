@@ -1,0 +1,69 @@
+version: "3.4"
+
+x-common-variables: &common-variables
+  MYSQL_DATABASE: SMsonglist
+  MYSQL_USER: sw_user
+  MYSQL_PASSWORD: 'Y71o8QcQNn'
+  SECRET_KEY: 'benis'
+
+services:
+  mysql:
+    image: mariadb
+    environment:
+      <<: *common-variables
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+    ports:
+      - '3306:3306'
+    networks:
+      - backend
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
+      - ./docker/persist/:/var/lib/mysql
+  php:
+    build: './docker/php/'
+    depends_on:
+      - mysql
+    environment:
+      <<: *common-variables
+      BANNER_DIR: '/var/www/html/images/packs'
+    networks:
+      - backend
+    volumes:
+      - ./request_list/:/var/www/html/
+      - ./song-scraper/:/var/www/html/scraper/
+      - C:/Games/StepMania 5.1:/var/www/smdir
+  apache:
+    build: './docker/apache/'
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./request_list/:/var/www/html/
+      - ./song-scraper/:/var/www/html/scraper/
+      - C:/Games/StepMania 5.1:/var/www/smdir
+  chatbot:
+    build: './chatbot/'
+    environment:
+      <<: *common-variables
+      BOTUSERNAME: 'your-bot'
+      BOTPASSWORD: 'oauth:your-key'
+      BOTCHANNEL: 'your-channel'
+      URLBASE: 'http://apache'
+    networks:
+      - backend
+  song_sender:
+    build: './docker/song_sender/'
+    environment:
+      <<: *common-variables
+    networks:
+      - backend
+    volumes:
+      - C:/Games/StepMania 5.1:/usr/src/app/sm5
+networks:
+  frontend:
+  backend:

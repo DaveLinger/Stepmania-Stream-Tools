@@ -18,6 +18,13 @@
 
 include ('config.php');
 
+if (php_sapi_name() == "cli") {
+    // In cli-mode
+} else {
+	// Not in cli-mode
+	if (!isset($_GET['security_key']) || $_GET['security_key'] != $security_key){die("Fuck off");}
+}
+
 // Code
 
 function clean($string) {
@@ -35,7 +42,6 @@ function parseMetadata($file) {
 	$data = substr($data,0,strpos($data,"//-------"));
 	
 	$file_arr = preg_split("/{$eol}/",$data);
-	//print_r($file_arr);
 	
 	foreach ($file_arr as $line){
 		// if there is no $delimiter, set an empty string

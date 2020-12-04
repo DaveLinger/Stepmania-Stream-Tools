@@ -1,3 +1,4 @@
 
 .DS_Store
-test_files/*
+request_list/images/packs/*
+docker/persist/*
