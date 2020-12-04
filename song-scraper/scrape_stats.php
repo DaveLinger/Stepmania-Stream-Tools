@@ -9,6 +9,13 @@
 
 include ('config.php');
 
+if (php_sapi_name() == "cli") {
+    // In cli-mode
+} else {
+	// Not in cli-mode
+	if (!isset($_GET['security_key']) || $_GET['security_key'] != $security_key){die("Fuck off");}
+}
+
 function find_statsxml($directory){
 	//look for any Stats.xml files in the profile directory
 	$file_arr = array();
