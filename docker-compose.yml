@@ -1,10 +1,12 @@
+# Don't touch anything in this file unless you really know what you're doing. To set up your chat bot or Stepmania directory, edit the .env file instead.
+
 version: "3.4"
 
 x-common-variables: &common-variables
   MYSQL_DATABASE: SMsonglist
   MYSQL_USER: sw_user
   MYSQL_PASSWORD: 'Y71o8QcQNn'
-  SECRET_KEY: 'benis'
+  SECRET_KEY: ${SECRET_KEY}
 
 services:
   mysql:
@@ -31,7 +33,7 @@ services:
     volumes:
       - ./request_list/:/var/www/html/
       - ./song-scraper/:/var/www/html/scraper/
-      - C:/Games/StepMania 5.1:/var/www/smdir
+      - ${SMDIR}:/var/www/smdir
   apache:
     build: './docker/apache/'
     depends_on:
@@ -45,14 +47,14 @@ services:
     volumes:
       - ./request_list/:/var/www/html/
       - ./song-scraper/:/var/www/html/scraper/
-      - C:/Games/StepMania 5.1:/var/www/smdir
+      - ${SMDIR}:/var/www/smdir
   chatbot:
     build: './chatbot/'
     environment:
       <<: *common-variables
-      BOTUSERNAME: 'your-bot'
-      BOTPASSWORD: 'oauth:your-key'
-      BOTCHANNEL: 'your-channel'
+      BOTUSERNAME: ${BOTUSERNAME}
+      BOTPASSWORD: ${BOTPASSWORD}
+      BOTCHANNEL: ${BOTCHANNEL}
       URLBASE: 'http://apache'
     networks:
       - backend
@@ -63,7 +65,7 @@ services:
     networks:
       - backend
     volumes:
-      - C:/Games/StepMania 5.1:/usr/src/app/sm5
+      - ${SMDIR}:/usr/src/app/sm5
 networks:
   frontend:
   backend:
