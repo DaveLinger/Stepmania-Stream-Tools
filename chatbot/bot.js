@@ -116,9 +116,27 @@ function onMessageHandler (target, context, msg, self) {
 	
   }
   
-  if(theCommand.startsWith("!ban ")){
+  if(theCommand.startsWith("!bansong ")){
 	if(moderator){
-		encodedURI = encodeURI('/requestor.php?security_key='+secretKey+'&ban='+theArgs);
+		encodedURI = encodeURI('/song_admin.php?security_key='+secretKey+'&bansong='+theArgs);
+		requestURI = urlbase+encodedURI;
+		var request = require("request");
+		request(
+			{ uri: urlbase+encodedURI },
+			function(error, response, body) {
+				console.log(error);
+				console.log(body);
+				client.say(target, body);
+			}
+		);
+	}else{
+	  //Not a mod
+	}
+  }	
+	
+  if(theCommand.startsWith("!banuser ")){
+	if(moderator){
+		encodedURI = encodeURI('/requestor.php?security_key='+secretKey+'&banuser='+theArgs);
 		requestURI = urlbase+encodedURI;
 		var request = require("request");
 		request(
@@ -135,7 +153,7 @@ function onMessageHandler (target, context, msg, self) {
   }
   
   if(theCommand == "!cancel"){
-	encodedURI = encodeURI('/request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&cancel');
+	encodedURI = encodeURI('/request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&cancel='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
 	request(
@@ -149,7 +167,7 @@ function onMessageHandler (target, context, msg, self) {
   }
   
   if(theCommand == "!random"){
-	encodedURI = encodeURI('/request_random.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&count='+theArgs);
+	encodedURI = encodeURI('/rand_request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&random=random&num='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
 	request(
@@ -163,7 +181,7 @@ function onMessageHandler (target, context, msg, self) {
   }
   
   if(theCommand == "!randomben"){
-	encodedURI = encodeURI('/request_ben.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId);
+	encodedURI = encodeURI('/rand_request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&random=Ben+Speirs&num='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
 	request(
@@ -178,7 +196,7 @@ function onMessageHandler (target, context, msg, self) {
   
   if(theCommand == "!skip"){
 	if(moderator){
-		encodedURI = encodeURI('/request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&skip');
+		encodedURI = encodeURI('/request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&skip='+theArgs);
 		requestURI = urlbase+encodedURI;
 		var request = require("request");
 		request(
@@ -199,7 +217,7 @@ function onMessageHandler (target, context, msg, self) {
   }
   
   if(theCommand == "!top"){
-	encodedURI = encodeURI('/request_top.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId);
+	encodedURI = encodeURI('/rand_request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&random=top&num='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
 	request(
