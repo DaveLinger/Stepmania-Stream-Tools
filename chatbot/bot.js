@@ -3,7 +3,7 @@ const { exec } = require("child_process");
 const { isNull, isNullOrUndefined } = require('util');
 require('dotenv').config()
 
-if(isNullOrUndefined(process.env.BOTUSERNAME) || isNullOrUndefined(process.env.BOTPASSWORD) || isNullOrUndefined(process.env.BOTCHANNEL) || isNullOrUndefined(process.env.URLBASE) || isNullOrUndefined(process.env.SECRET_KEY)){
+if(isNullOrUndefined(process.env.BOTUSERNAME) || isNullOrUndefined(process.env.BOTPASSWORD) || isNullOrUndefined(process.env.BOTCHANNEL) || isNullOrUndefined(process.env.URLBASE) || isNullOrUndefined(process.env.SECRET_KEY) || (!(process.env.SECRET_KEY))){
 	console.log("Invalid environment variables!");
 	process.exit();
 }
@@ -40,18 +40,9 @@ function onMessageHandler (target, context, msg, self) {
   displayName = context["display-name"];
   emotes = context["emotes"];
   moderator = context["mod"];
-  //if (context.hasOwnProperty("badges")) {
-  //  if(context["badges"].hasOwnProperty("broadcaster")){
-  //    if(context["badges"]["broadcaster"] == "1"){
-  //      moderator = true;
-  //    }
-  //  }
-  //}
   subscriber = context["subscriber"];
   userId = context["user-id"];
   
-  //console.log("emotes: "+emotes);
-  //console.log(emotes);
   howManyEmotes = 0;
   for (var emoteId in emotes) {
     howManyEmotes++;
@@ -62,9 +53,6 @@ function onMessageHandler (target, context, msg, self) {
   if(howManyEmotes < 1 && (msg.indexOf("bandit") !== -1 || msg.indexOf("Bandit") !== -1)){
       client.say(target, "woof!");
   }
-  //bandit face is emote 922359
-  //aa emote is 922366
-  //do max 300 emote is 922375
 
   // Remove whitespace from chat message
   const commandName = msg.trim();
@@ -258,4 +246,3 @@ function onMessageHandler (target, context, msg, self) {
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`);
 }
-

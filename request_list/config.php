@@ -54,6 +54,10 @@ $broadcasters = array(
 						//twitch id			//SM5 profile
 						'ddrdave' 		=> 	'Dave',
 						'mrtwinkles47' => 	'MRT'
-					 );
+                     );
+                     
+if($security_key == ""){
+    die("Security key must be set in .env file to use this software!");
+}
 
 ?>

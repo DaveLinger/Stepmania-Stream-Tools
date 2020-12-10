@@ -50,4 +50,8 @@ $target_url = 'http://apache/banners.php';
 //list of song packs/groups to ignore while scraping
 $packsIgnore = array('~WIP');
 
+if($security_key == ""){
+    die("Security key must be set in .env file to use this software!");
+}
+
 ?>

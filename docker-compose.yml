@@ -58,14 +58,14 @@ services:
       URLBASE: 'http://apache'
     networks:
       - backend
-  song_sender:
-    build: './docker/song_sender/'
-    environment:
-      <<: *common-variables
-    networks:
-      - backend
-    volumes:
-      - ${SMDIR}:/usr/src/app/sm5
+  #song_sender:
+    #build: './docker/song_sender/'
+    #environment:
+      #<<: *common-variables
+    #networks:
+      #- backend
+    #volumes:
+      #- ${SMDIR}:/usr/src/app/sm5
 networks:
   frontend:
   backend:
