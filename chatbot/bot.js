@@ -152,7 +152,8 @@ function onMessageHandler (target, context, msg, self) {
 	}
   }
   
-  if(theCommand == "!cancel"){
+  if(theCommand == "!cancel "){
+	 if(theArgs == ""){theArgs ="1";}
 	encodedURI = encodeURI('/request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&cancel='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
@@ -166,7 +167,8 @@ function onMessageHandler (target, context, msg, self) {
 	);
   }
   
-  if(theCommand == "!random"){
+  if(theCommand == "!random "){
+	if(theArgs == ""){theArgs ="1";}
 	encodedURI = encodeURI('/rand_request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&random=random&num='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
@@ -180,7 +182,8 @@ function onMessageHandler (target, context, msg, self) {
 	);
   }
   
-  if(theCommand == "!randomben"){
+  if(theCommand == "!randomben "){
+	  if(theArgs == ""){theArgs ="1";}
 	encodedURI = encodeURI('/rand_request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&random=Ben+Speirs&num='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
@@ -194,7 +197,8 @@ function onMessageHandler (target, context, msg, self) {
 	);
   }
   
-  if(theCommand == "!skip"){
+  if(theCommand == "!skip "){
+	  if(theArgs == ""){theArgs ="1";}
 	if(moderator){
 		encodedURI = encodeURI('/request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&skip='+theArgs);
 		requestURI = urlbase+encodedURI;
@@ -216,7 +220,8 @@ function onMessageHandler (target, context, msg, self) {
 	client.say(target, `The song list can be found here: https://www.davelinger.com/twitch/songlist.php`);
   }
   
-  if(theCommand == "!top"){
+  if(theCommand == "!top "){
+	  if(theArgs == ""){theArgs ="1";}
 	encodedURI = encodeURI('/rand_request.php?security_key='+secretKey+'&user='+displayName+'&userid='+userId+'&random=top&num='+theArgs);
 	requestURI = urlbase+encodedURI;
 	var request = require("request");
