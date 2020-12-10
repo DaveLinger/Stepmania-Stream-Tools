@@ -77,8 +77,57 @@ h3 {
   text-overflow:ellipsis;
 }
 
+/* We can still assume the source is twitch */
 h4 {
   background-image: url("images/twitch.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  letter-spacing:0.03em;
+  font-size:4vw;
+  margin:0px;
+  margin-bottom:2vw;
+  margin-right:2vw;
+  padding-left:5vw;
+  margin-top:1vw;
+  font-weight:500;
+  color: white;
+  z-index: 3;
+  position:relative;
+  float:right;
+  display:inline-block;
+  opacity: 0.85;
+  text-shadow: 0.25vw 0.25vw 0.5vw rgba(0,0,0,0.9);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+h4.twitch {
+  background-image: url("images/twitch.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  letter-spacing:0.03em;
+  font-size:4vw;
+  margin:0px;
+  margin-bottom:2vw;
+  margin-right:2vw;
+  padding-left:5vw;
+  margin-top:1vw;
+  font-weight:500;
+  color: white;
+  z-index: 3;
+  position:relative;
+  float:right;
+  display:inline-block;
+  opacity: 0.85;
+  text-shadow: 0.25vw 0.25vw 0.5vw rgba(0,0,0,0.9);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+h4.discord {
+  background-image: url("images/discord.png");
   background-size: contain;
   background-repeat: no-repeat;
   letter-spacing:0.03em;

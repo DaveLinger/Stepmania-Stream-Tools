@@ -55,10 +55,15 @@ function new_request(array){
 	artist = array.artist;
 	pack = array.pack;
 	img = array.img;
+	if(requestor==="Discord") {
+		source="Discord";
+	} else {
+		source="Twitch";
+	}
 
 	console.log("Adding request "+request_id);
 
-	data = \'<div class=\"songrow\" style=\"display:none\" id=\"request_\'+request_id+\'"\">\n<h2>\'+title+\'<h2a>\'+subtitle+\'</h2a></h2>\n<h3>\'+pack+\'</h3>\n<h4>\'+requestor+\'</h4>\n\'+request_type+\'\n<img class=\"songrow-bg\" src=\"\'+img+\'\" />\n</div>\n\';
+	data = \'<div class=\"songrow\" style=\"display:none\" id=\"request_\'+request_id+\'"\">\n<h2>\'+title+\'<h2a>\'+subtitle+\'</h2a></h2>\n<h3>\'+pack+\'</h3>\n<h4 class=\'+source+\'>\'+requestor+\'</h4>\n\'+request_type+\'\n<img class=\"songrow-bg\" src=\"\'+img+\'\" />\n</div>\n\';
 
         $("#lastid").html(request_id);
         $("#middle").prepend(data);
@@ -165,6 +170,12 @@ $(function() {refresh_data();});
 	$request_time = $row["request_time"];
 	$requestor = $row["requestor"];
 	$request_type = $row["request_type"];
+	// Add Discord check for style. $source used for image display determination
+	if ($requestor == "Discord"){
+			$source = "Discord";
+		} else {
+			$source = "Twitch";
+		}
 	if ($request_type == "random"){
 			$request_type = '<img src="images/d205.png" class="type">';
 		}else{
@@ -194,7 +205,7 @@ $(function() {refresh_data();});
 echo "<div class=\"songrow\" id=\"request_".$request_id."\">			
 <h2>$title<h2a>$subtitle</h2a></h2>
 <h3>$pack</h3>
-<h4>$requestor</h4>
+<h4 class=\"$source\">$requestor</h4>
 $request_type
 <img class=\"songrow-bg\" src=\"{$pack_img}\" />
 </div>\n";

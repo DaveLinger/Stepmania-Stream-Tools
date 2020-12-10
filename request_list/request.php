@@ -47,7 +47,32 @@ function request_song($song_id, $requestor, $tier, $twitchid, $broadcaster){
 	$retval0 = mysqli_query( $conn, $sql0 );
 	$row0 = mysqli_fetch_assoc($retval0);
 	if(($row0["total"] > 0) && ($userobj["whitelisted"] != "true")){die("That song has already been requested recently!");}
-	
+		
+		//Insert check for Discord 
+		//--------- 
+		//	Note: This could possibly be rolled into check_user with some level of difficulty due to unrealiable data. Pro: Cleaner code Con: Possible crashes, False Neg/Pos
+		//  The only way to currently check with MooBot is for the absence off all twitch related meta-data for the user. If none exists, set requestor = "Discord".
+		//	Validate against twitch data:
+		//
+		//	Valid Data Checks -- $user, $userid
+		//	Invalid Data Checks -- $tier, $broadcaster
+		
+		// Create variables for check
+		$twitchUser = $_GET['user'];
+		$twitchUserID = $_GET['userid'];
+
+		// Debug Logging
+		// wh_log("twitchUser is ".$twitchUser.".");
+		// wh_log("twitchUserid is ".$twitchUserid.".");
+		// wh_log("Current Requestor is ".$requestor.".");
+
+		If (empty($twitchUser) && empty($twitchUserID)) {
+			// If neither twitchUser or twitchUserID is set, change requestor to Discord
+			$requestor = "Discord";
+			// wh_log("Requestor updated to ".$requestor.".");
+		}
+
+
         $sql = "INSERT INTO sm_requests (song_id, request_time, requestor, twitch_tier, broadcaster, request_type) VALUES ('{$song_id}', NOW(), '{$requestor}', '{$tier}', '{$broadcaster}', 'normal')";
         $retval = mysqli_query( $conn, $sql );
 }
@@ -84,64 +109,80 @@ if(isset($_GET["broadcaster"])){
 
 $userobj = check_user($twitchid, $user);
 
+// For any cancel from Discord, do nothing
+
+		// Debug Logging
+		// wh_log("Current Requestor is ".$requestor.".");
+
 if(isset($_GET["cancel"])){
-	
-	if (!empty($_GET["cancel"]) && is_numeric($_GET["cancel"]) && $_GET["cancel"] > 0){
-		$num = $_GET["cancel"] - 1;
-	}else{
-		//$num = 0;
-		die("Good one, ".$user. ", but only positive integers are allowed!");
-	}
-
-        $sql = "SELECT * FROM sm_requests WHERE requestor = '{$user}' AND state <> 'canceled' AND state <> 'skipped' ORDER BY request_time DESC LIMIT 1 OFFSET {$num}";
-	$retval = mysqli_query( $conn, $sql );
-
-        if (mysqli_num_rows($retval) == 1) {
-                while($row = mysqli_fetch_assoc($retval)) {
-
-			$request_id = $row["id"];
-			$song_id = $row["song_id"];
-			
-            $sql2 = "SELECT * FROM sm_songs WHERE id = '{$song_id}' LIMIT 1";
-            $retval2 = mysqli_query( $conn, $sql2 );
-			while($row2 = mysqli_fetch_assoc($retval2)){
-		        $sql3 = "UPDATE sm_requests SET state = 'canceled' WHERE id = '{$request_id}'";
-        		$retval3 = mysqli_query( $conn, $sql3 );
-				echo "Canceled {$user}'s request for ".trim($row2["title"]." ".$row2["subtitle"]);
-			}
+	if ($requestor == "Discord") {
+		// Kill request for cancel since user/request can't be absolutely identified
+		die("Requests from Discord can't be cancelled by the user due to reasons.");
+	} else {
+		if (!empty($_GET["cancel"]) && is_numeric($_GET["cancel"]) && $_GET["cancel"] > 0){
+			$num = $_GET["cancel"] - 1;
+		}else{
+			//$num = 0;
+			die("Good one, ".$user. ", but only positive integers are allowed!");
 		}
 
-	}else{
-		echo "$user hasn't requested any songs!";
-	}
+			$sql = "SELECT * FROM sm_requests WHERE requestor = '{$user}' AND state <> 'canceled' AND state <> 'skipped' ORDER BY request_time DESC LIMIT 1 OFFSET {$num}";
+		$retval = mysqli_query( $conn, $sql );
 
+			if (mysqli_num_rows($retval) == 1) {
+					while($row = mysqli_fetch_assoc($retval)) {
+
+				$request_id = $row["id"];
+				$song_id = $row["song_id"];
+				
+				$sql2 = "SELECT * FROM sm_songs WHERE id = '{$song_id}' LIMIT 1";
+				$retval2 = mysqli_query( $conn, $sql2 );
+				while($row2 = mysqli_fetch_assoc($retval2)){
+					$sql3 = "UPDATE sm_requests SET state = 'canceled' WHERE id = '{$request_id}'";
+					$retval3 = mysqli_query( $conn, $sql3 );
+					echo "Canceled {$user}'s request for ".trim($row2["title"]." ".$row2["subtitle"]);
+				}
+			}
+
+		}else{
+			echo "$user hasn't requested any songs!";
+		}
+	}
 die();
 }
 
+// For any skip from Discord, do nothing
+
+		// Debug Logging
+		// wh_log("Current Requestor is ".$requestor.".");
+
 if(isset($_GET["skip"])){
+	if ($requestor == "Discord") {
+		// Kill request for skip since user/request can't be absolutely identified
+		die("Requests from Discord can't be skipped by the user due to reasons.");
+	} else {
+		if (!empty($_GET["skip"]) && is_numeric($_GET["skip"])){
+			$num = $_GET["skip"] - 1;
+		}else{
+			//$num = 0;
+			die("Nice try, ".$user. ", but only positive integers are allowed!");
+		}
 
-	if (!empty($_GET["skip"]) && is_numeric($_GET["skip"])){
-		$num = $_GET["skip"] - 1;
-	}else{
-		//$num = 0;
-		die("Nice try, ".$user. ", but only positive integers are allowed!");
-	}
+		$sql = "SELECT * FROM sm_requests WHERE state <> \"canceled\" AND state <> \"skipped\" ORDER BY request_time DESC LIMIT 1 OFFSET {$num}";
+			$retval = mysqli_query( $conn, $sql );
 
-	$sql = "SELECT * FROM sm_requests WHERE state <> \"canceled\" AND state <> \"skipped\" ORDER BY request_time DESC LIMIT 1 OFFSET {$num}";
-        $retval = mysqli_query( $conn, $sql );
-
-                while($row = mysqli_fetch_assoc($retval)) {
-					$request_id = $row["id"];
-					$song_id = $row["song_id"];
-					$sql2 = "SELECT * FROM sm_songs WHERE id = \"$song_id\" LIMIT 1";
-					$retval2 = mysqli_query( $conn, $sql2 );
-					while($row2 = mysqli_fetch_assoc($retval2)){
-						$sql3 = "UPDATE sm_requests SET state=\"skipped\" WHERE id = \"$request_id\"";
-						$retval3 = mysqli_query( $conn, $sql3 );
-						echo "$user skipped ".trim($row2["title"]." ".$row2["subtitle"]);
+					while($row = mysqli_fetch_assoc($retval)) {
+						$request_id = $row["id"];
+						$song_id = $row["song_id"];
+						$sql2 = "SELECT * FROM sm_songs WHERE id = \"$song_id\" LIMIT 1";
+						$retval2 = mysqli_query( $conn, $sql2 );
+						while($row2 = mysqli_fetch_assoc($retval2)){
+							$sql3 = "UPDATE sm_requests SET state=\"skipped\" WHERE id = \"$request_id\"";
+							$retval3 = mysqli_query( $conn, $sql3 );
+							echo "$user skipped ".trim($row2["title"]." ".$row2["subtitle"]);
+						}
 					}
-                }
-
+	}
 die();
 }
 
