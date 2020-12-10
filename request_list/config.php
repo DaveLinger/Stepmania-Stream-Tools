@@ -60,15 +60,12 @@ if($security_key == ""){
     die("Security key must be set in .env file to use this software!");
 }
 
-if ( !is_dir( "/var/www/smdir/Cache/Songs" ) ) {
-    //Cache directory is missing
-    if ( !is_dir( "/var/www/smdir/Data" ) ) {
-        //Data directory is also missing.
-        die("Stepmania directory specified in .env file is not correct.");
-    }else{
-        //Data directory is found
-        die("Songs cache directory not found in Stepmania directory. You must start Stepmania before running this software. Also, if you are not running Stepmania in portable mode, your Stepmania directory may be in \"AppData\".");
-    }
+$localcache = true;
+
+if(!is_dir("/var/www/smdir/Cache/Songs")){
+
+    $localcache = false;
+
 }
 
 ?>

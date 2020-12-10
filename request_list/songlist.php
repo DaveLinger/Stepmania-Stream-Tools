@@ -688,7 +688,8 @@ echo "</tbody></table>";
 </div>
 
 <div class="w3-padding-small w3-container w3-theme w3-center">
-StepMania song scraping code used to populate this table <strike>stolen</strike> borrowed from <a href="https://github.com/DaveLinger/Stepmania-Stream-Tools" target="_blank">Dave Linger</a> aka <a href="https://twitch.tv/ddrdave" target="_blank">(ddrDave)</a>. <a href="#" onclick="initScrape()"><img src="images/database_add.png"></a>
+StepMania song scraping code used to populate this table <strike>stolen</strike> borrowed from <a href="https://github.com/DaveLinger/Stepmania-Stream-Tools" target="_blank">Dave Linger</a> aka <a href="https://twitch.tv/ddrdave" target="_blank">(ddrDave)</a>.
+<?php if($localcache){ echo ' <a href="#" onclick="initScrape()"><img src="images/database_add.png"></a>'; } ?>
 </div>
 
 </html>
